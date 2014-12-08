@@ -2,6 +2,7 @@ package game.enemy
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import game.TileGrid;
 	import utils.Vector2D;
 	/**
 	 * ...
@@ -13,6 +14,8 @@ package game.enemy
 		private var _health:Number;
 		private var _mass:Number;
 		
+		private var direction:Array = [[],[]];
+		
 
 		
 		public function enemyBehaviour():void
@@ -22,6 +25,36 @@ package game.enemy
 		
 		private function update(e:Event):void 
 		{
+			
+			var indexX:Number = Math.floor((this.x - 30) / 64), indexY:Number = Math.floor((this.y - 30)/ 64);
+			var tilegrid:Array = TileGrid.tileGrid;
+			
+			
+			//dir 1 is X direction
+			this.x += direction[0] * speed;
+			
+			//dir 2 is Y direction
+			this.y += direction[1] * speed;
+			
+			
+			trace(tilegrid[indexY][indexX]);
+			if (tilegrid[indexY][indexX] == 0) {
+				direction[0] = 1;
+				direction[1] = 0;
+			} else if (tilegrid[indexY][indexX] == 3) {
+				direction[0] = 0;
+				direction[1] = 1;
+			} else if (tilegrid[indexY][indexX] == 4) {
+				direction[0] = 1;
+				direction[1] = 0;
+			} else if (tilegrid[indexY][indexX] == 5) {
+				direction[0] = 0;
+				direction[1] = -1;
+			} else if (tilegrid[indexY + 1][indexX] == 6) {
+				direction[0] = 1;
+				direction[1] = 0;
+			}
+			
 			
 		}
 	

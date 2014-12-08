@@ -19,18 +19,34 @@ package game
 	public class Game extends Sprite 
 	{
 		private var enemyFactory:EnemyFactory;
-		private var enemy:Enemy;
+		private var _enemy:Enemy;
+		
 		private var tileGrid:TileGrid;
 		private var char:Cam;
+		private var bg:BG;
 		
 		public function Game(s:Stage) 
 		{
+			bg = new BG();
+			bg.x = -0;
+			bg.y = 110;
+			bg.scaleX = 0.78;
+			bg.scaleY = 0.78;
+			addChild(bg);
+			
 			tileGrid = new TileGrid();
 			addChild(tileGrid);
-			tileGrid.createGrid(36, 25, 64, 64	);
+			tileGrid.createGrid(64, 64);
 			
 			char = new Cam(0x000000, 1,s);
 			addChild(char);
+			
+			enemyFactory = new EnemyFactory();
+			_enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
+			addChild(_enemy);
+			_enemy.x = 64 * 2 - 34;
+			_enemy.y = 64 * 6 - 34;
+			_enemy.enemyBehaviour();
 			
 			s.addEventListener(Event.ENTER_FRAME, camera);
 			
@@ -41,6 +57,7 @@ package game
 		
 		private function update(e:Event):void
 		{
+			
 		}
 		
 		private function camera(e:Event):void 

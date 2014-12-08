@@ -10,9 +10,11 @@ package assets
 		
 		public function NEnemyPH() 
 		{
-			graphics.beginFill(0xff0000, 1);
-			graphics.drawCircle(0, -5, 15);
+			graphics.beginFill(0x00ff00, 1);
+			graphics.drawRect(0, -5, 150, 100);
 			graphics.endFill();
+			
+			
 		}
 		
 	}

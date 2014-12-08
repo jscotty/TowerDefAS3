@@ -20,8 +20,8 @@ package menu
 			addChild(bg);
 			
 			button = new ButtonPH();
-			button.x = 300;
-			button.y = 100;
+			button.x = 100;
+			button.y = 40;
 			addChild(button);
 			
 			button.addEventListener(MouseEvent.CLICK, startGame);
