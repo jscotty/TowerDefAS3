@@ -1,4 +1,4 @@
-package game.enemy.EnemyType 
+package game.enemy.enemyType 
 {
 	import assets.NEnemyPH;
 	import game.enemy.Enemy;
@@ -18,7 +18,7 @@ package game.enemy.EnemyType
 			enemy.height = 64;
 			
 			health = 100;
-			speed = 2;
+			speed = 3;
 			mass = 3;
 		}
 		

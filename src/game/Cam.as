@@ -99,6 +99,22 @@ package game
 				speedX += slowSpeed;
 				keypressed = false;
 			}
+			
+			if (this.x <= -235) {
+				keypressed = true;
+				this.x += 5;
+			}else if (this.x >= 2275) {
+				keypressed = true;
+				this.x -= 5;
+			}else if (this.y <= -1) {
+				keypressed = true;
+				this.y += 5;
+			}else if (this.y >= 1065) {
+				keypressed = true;
+				this.y -= 5;
+			}else {
+				keypressed = false;
+			}
 		}
 		
 		public function redraw(reColor:int):void

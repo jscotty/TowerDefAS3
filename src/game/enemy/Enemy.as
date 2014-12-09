@@ -21,6 +21,7 @@ package game.enemy
 		public function enemyBehaviour():void
 		{
 			addEventListener(Event.ENTER_FRAME, update);
+			direction[0] = 1;
 		}
 		
 		private function update(e:Event):void 
@@ -36,24 +37,43 @@ package game.enemy
 			//dir 2 is Y direction
 			this.y += direction[1] * speed;
 			
+			var myTile = tilegrid[indexY][indexX];
+			var Up = tilegrid[indexY - 1][indexX];
+			var Down = tilegrid[indexY + 1][indexX];
+			var Right = tilegrid[indexY][indexX + 1];
+			var Left = tilegrid[indexY][indexX - 1];
 			
-			trace(tilegrid[indexY][indexX]);
-			if (tilegrid[indexY][indexX] == 0) {
-				direction[0] = 1;
-				direction[1] = 0;
-			} else if (tilegrid[indexY][indexX] == 3) {
+			trace("mytile: " + myTile + " up:" + Up + " down:" + Down + " right:" + Right + " left:" + Left);
+			
+			if (Right == 1) {
 				direction[0] = 0;
 				direction[1] = 1;
-			} else if (tilegrid[indexY][indexX] == 4) {
+			}
+			
+			
+			/*if (tilegrid[indexY][indexX] == 3 || tilegrid[indexY][indexX] == 11 || tilegrid[indexY][indexX] == 17 || tilegrid[indexY][indexX] == 15) {
+				direction[0] = 0;
+				direction[1] = 1;
+			} else if (tilegrid[indexY][indexX] == 4 || tilegrid[indexY][indexX] == 16 || tilegrid[indexY][indexX] == 10) {
 				direction[0] = 1;
 				direction[1] = 0;
-			} else if (tilegrid[indexY][indexX] == 5) {
+			} else if (tilegrid[indexY][indexX] == 5 || tilegrid[indexY][indexX] == 12) {
 				direction[0] = 0;
 				direction[1] = -1;
-			} else if (tilegrid[indexY + 1][indexX] == 6) {
+			} else if (tilegrid[indexY][indexX] == 18) {
+				direction[0] = -1;
+				direction[1] = 0;
+			} else if (tilegrid[indexY + 1][indexX] == 6 || tilegrid[indexY][indexX] == 9) {
 				direction[0] = 1;
 				direction[1] = 0;
-			}
+			
+			} else if (tilegrid[indexY + 1][indexX] == 25) {
+				direction[0] = 1;
+				direction[1] = 0;
+			} else if (tilegrid[indexY + 1][indexX] == 26) {
+				direction[0] = 0;
+				direction[1] = 1;
+			}*/
 			
 			
 		}

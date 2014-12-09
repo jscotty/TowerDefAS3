@@ -12,13 +12,15 @@ package assets
 	public class ButtonPH extends Sprite
 	{
 		private var text:TextField;
-		private var tf:TextFormat = new TextFormat("arial", 60, 0x000000, true);
+		private var tf:TextFormat;
 		private var outline:GlowFilter = new GlowFilter(0xf0ff03, 1, 5, 5, 2, 1, false);
 		public function ButtonPH() 
 		{
 			/*graphics.beginFill(0x00ff00, 1);
 			graphics.drawRect(0, -5, 150, 100);
 			graphics.endFill();*/
+			
+			tf = new TextFormat("arial", 60, 0x000000, true);
 			
 			text = new TextField();
 			text.text = "Play";
@@ -34,12 +36,14 @@ package assets
 		
 		private function onOut(e:MouseEvent):void 
 		{
-			this.alpha = 1;
+			tf = new TextFormat("arial", 60, 0x000000, true);
+			text.setTextFormat(tf);
 		}
 		
 		private function onHoover(e:MouseEvent):void 
 		{
-			this.alpha = 0.8;
+			tf = new TextFormat("arial", 60, 0xff0000, true);
+			text.setTextFormat(tf);
 		}
 		
 	}

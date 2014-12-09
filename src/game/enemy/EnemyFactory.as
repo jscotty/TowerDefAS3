@@ -1,6 +1,6 @@
 package game.enemy 
 {
-	import game.enemy.EnemyType.NormalEnemy;
+	import game.enemy.enemyType.NormalEnemy;
 	/**
 	 * ...
 	 * @author justin Bieshaar
