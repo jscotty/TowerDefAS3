@@ -25,6 +25,8 @@ package game
 		private var char:Cam;
 		private var bg:BG;
 		
+		private var scope:Microscope;
+		
 		public function Game(s:Stage) 
 		{
 			bg = new BG();
@@ -43,7 +45,7 @@ package game
 			
 			enemyFactory = new EnemyFactory();
 			_enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
-			addChild(_enemy);
+			addChildAt(_enemy,2);
 			_enemy.x = 64 * 2 - 34;
 			_enemy.y = 64 * 6 - 34;
 			_enemy.enemyBehaviour();
@@ -52,12 +54,15 @@ package game
 			
 			addEventListener(Event.ENTER_FRAME, update);
 			
+			scope = new Microscope();
+			addChildAt(scope,3);
 		}
 		
 		
 		private function update(e:Event):void
 		{
-			
+			scope.x = char.x;
+			scope.y = char.y;
 		}
 		
 		private function camera(e:Event):void 

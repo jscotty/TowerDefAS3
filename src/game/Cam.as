@@ -22,10 +22,10 @@ package game
 		private var speed:Number = 25;
 		private var slowSpeed:Number = 10;
 		
-		private var keypressedLeft:Boolean;
-		private var keypressedRight:Boolean;
-		private var keypressedUp:Boolean;
-		private var keypressedDown:Boolean;
+		private var left:Boolean;
+		private var right:Boolean;
+		private var up:Boolean;
+		private var down:Boolean;
 		
 		private var keypressed:Boolean
 		
@@ -33,33 +33,58 @@ package game
 		{
 			s.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 			s.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			s.addEventListener(MouseEvent.MOUSE_DOWN, onDown);
+			s.addEventListener(MouseEvent.MOUSE_UP, onUp);
 			addEventListener(Event.ENTER_FRAME, update);
+			
+		}
+		
+		private function onUp(e:MouseEvent):void 
+		{
+				right = false;
+				left = false;
+				down = false;
+				up = false;
+			
+		}
+		
+		private function onDown(e:MouseEvent):void 
+		{
+			if (mouseX > stage.stageWidth / 1.2) {
+				right = true;
+			}else if (mouseX < stage.stageWidth / 5) {
+				left = true;
+			}else if (mouseY > stage.stageHeight / 1.2) {
+				down = true;
+			}else if (mouseY < stage.stageHeight / 5) {
+				up = true;
+			}
 			
 		}
 		
 		private function keyUp(e:KeyboardEvent):void 
 		{
 			if (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.D) {
-				keypressedRight = false;
+				right = false;
 			}else if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.A) {
-				keypressedLeft = false;
+				left = false;
 			}else if (e.keyCode == Keyboard.UP || e.keyCode == Keyboard.W) {
-				keypressedUp = false;
+				up = false;
 			}else if (e.keyCode == Keyboard.DOWN || e.keyCode == Keyboard.S) {
-				keypressedDown = false;
+				down = false;
 			}
 		}
 		
 		private function keyDown(e:KeyboardEvent):void 
 		{
 			if (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.D) {
-				keypressedRight = true;
+				right = true;
 			}else if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.A) {
-				keypressedLeft = true;
+				left = true;
 			}else if (e.keyCode == Keyboard.UP || e.keyCode == Keyboard.W) {
-				keypressedUp = true;
+				up = true;
 			}else if (e.keyCode == Keyboard.DOWN || e.keyCode == Keyboard.S) {
-				keypressedDown = true;
+				down = true;
 			}
 		}
 		
@@ -68,16 +93,22 @@ package game
 			this.x += speedX;
 			this.y += speedY;
 			
-			if (keypressedLeft && !keypressed) {
+			trace("MouseX:" + mouseX + " stageWidth:" + stage.stageWidth / 6);
+			
+			if (mouseX > stage.stageWidth / 1.4) {
+				trace("move");
+			}
+			
+			if (left && !keypressed) {
 				keypressed = true;
 				speedX = -speed;
-			} else if (keypressedRight && !keypressed) {
+			} else if (right && !keypressed) {
 				keypressed = true;
 				speedX = speed;
-			} else if (keypressedUp && !keypressed) {
+			} else if (up && !keypressed) {
 				keypressed = true;
 				speedY = -speed;
-			} else if (keypressedDown && !keypressed) {
+			} else if (down && !keypressed) {
 				keypressed = true;
 				speedY = speed;
 			} else if (speedX > 0) {
@@ -99,19 +130,18 @@ package game
 				speedX += slowSpeed;
 				keypressed = false;
 			}
-			
 			if (this.x <= -235) {
 				keypressed = true;
-				this.x += 5;
+				this.x += 10;
 			}else if (this.x >= 2275) {
 				keypressed = true;
-				this.x -= 5;
+				this.x -= 10;
 			}else if (this.y <= -1) {
 				keypressed = true;
-				this.y += 5;
+				this.y += 10;
 			}else if (this.y >= 1065) {
 				keypressed = true;
-				this.y -= 5;
+				this.y -= 10;
 			}else {
 				keypressed = false;
 			}

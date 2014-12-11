@@ -16,7 +16,8 @@ package game.enemy
 		
 		private var direction:Array = [[],[]];
 		
-
+		private var posX:Number = 30;
+		private var posY:Number = 30;
 		
 		public function enemyBehaviour():void
 		{
@@ -27,9 +28,8 @@ package game.enemy
 		private function update(e:Event):void 
 		{
 			
-			var indexX:Number = Math.floor((this.x - 30) / 64), indexY:Number = Math.floor((this.y - 30)/ 64);
+			var indexX:Number = Math.floor((this.x - posX) / 64), indexY:Number = Math.floor((this.y - posY)/ 64);
 			var tilegrid:Array = TileGrid.tileGrid;
-			
 			
 			//dir 1 is X direction
 			this.x += direction[0] * speed;
@@ -37,17 +37,96 @@ package game.enemy
 			//dir 2 is Y direction
 			this.y += direction[1] * speed;
 			
-			var myTile = tilegrid[indexY][indexX];
-			var Up = tilegrid[indexY - 1][indexX];
-			var Down = tilegrid[indexY + 1][indexX];
-			var Right = tilegrid[indexY][indexX + 1];
-			var Left = tilegrid[indexY][indexX - 1];
+			var myTile:Number = tilegrid[indexY][indexX];
+			var nexTile:Number = tilegrid[indexY + direction[1]][indexX + direction[0]];
+			var up:Number = tilegrid[indexY - 1][indexX];
+			var down:Number = tilegrid[indexY + 1][indexX];
+			var right:Number = tilegrid[indexY][indexX + 1];
+			var left:Number = tilegrid[indexY][indexX - 1];
 			
-			trace("mytile: " + myTile + " up:" + Up + " down:" + Down + " right:" + Right + " left:" + Left);
+			//trace("mytile: " + myTile + " >NEXTILE<:" + nexTile + " up:" + up + " down:" + down + " right:" + right + " left:" + left);
 			
-			if (Right == 1) {
+			if (direction[0] == -1) posX = -30;
+			if (direction[0] == 1) posX = 30;
+			if (direction[1] == -1) posY = -30;
+			if (direction[1] == 1) posY = 30;
+			
+			if (direction[0] == 1 && nexTile == 0) {
+				if ( right > 0) {
+					direction[0] = 1;
+					direction[1] = 0;
+				}
+				else if ( down > 0) {
+					direction[0] = 0;
+					direction[1] = 1;
+				}
+				else if ( up > 0) {
+					direction[0] = 0;
+					direction[1] = -1;
+				}
+				else if ( left > 0) {
+					direction[0] = -1;
+					direction[1] = 0;
+				}
+			} else if (direction[0] == -1 && nexTile == 0) {
+				if ( down > 0) {
+					direction[0] = 0;
+					direction[1] = 1;
+				}
+				else if ( up > 0) {
+					direction[0] = 0;
+					direction[1] = -1;
+				}
+				else if ( left > 0) {
+					direction[0] = -1;
+					direction[1] = 0;
+				}
+				else if ( right > 0) {
+					direction[0] = 1;
+					direction[1] = 0;
+				}
+			} else if (direction[1] == 1 && nexTile == 0) {
+				if ( right > 0) {
+					direction[0] = 1;
+					direction[1] = 0;
+				}
+				else if ( left > 0) {
+					direction[0] = -1;
+					direction[1] = 0;
+				}
+				else if ( up > 0) {
+					direction[0] = 0;
+					direction[1] = -1;
+				}
+				else if ( down > 0) {
+					direction[0] = 0;
+					direction[1] = 1;
+				}
+			} else if (direction[1] == -1 && nexTile == 0) {
+				if ( right > 0) {
+					direction[0] = 1;
+					direction[1] = 0;
+				}
+				else if ( left > 0) {
+					direction[0] = -1;
+					direction[1] = 0;
+				}
+				else if ( down > 0) {
+					direction[0] = 0;
+					direction[1] = 1;
+				}
+				else if ( up > 0) {
+					direction[0] = 0;
+					direction[1] = -1;
+				}
+			}
+			
+			if (myTile == 23) {
 				direction[0] = 0;
 				direction[1] = 1;
+			} else if (myTile == 99) {
+				direction[0] = 0;
+				direction[1] = 0;
 			}
 			
 			
