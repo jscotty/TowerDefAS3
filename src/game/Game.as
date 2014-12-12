@@ -27,6 +27,9 @@ package game
 		
 		private var scope:Microscope;
 		
+		private var indexX:Number;
+		private var indexY:Number;
+		
 		public function Game(s:Stage) 
 		{
 			bg = new BG();
@@ -53,16 +56,42 @@ package game
 			s.addEventListener(Event.ENTER_FRAME, camera);
 			
 			addEventListener(Event.ENTER_FRAME, update);
+			addEventListener(MouseEvent.CLICK, onClick);
 			
 			scope = new Microscope();
 			addChildAt(scope,3);
 		}
 		
-		
 		private function update(e:Event):void
 		{
 			scope.x = char.x;
 			scope.y = char.y;
+			
+			indexX = Math.floor(mouseX / 64);
+			indexY = Math.floor(mouseY / 64);
+		}
+		
+		private function onClick(e:MouseEvent):void 
+		{
+			var grid:Array = TileGrid.tileGrid;
+			var gridTex:Array = TileGrid.tileTexture;
+			
+			if (grid[indexY][indexX] == 19) {
+				grid[indexY][indexX] = 20;
+				tileGrid.changeTile(0, indexY, indexX);
+			} else if (grid[indexY][indexX] == 20) {
+				grid[indexY][indexX] = 19;
+				tileGrid.changeTile(90, indexY, indexX);
+			} else if (grid[indexY][indexX] == 22) {
+				grid[indexY][indexX] = 22;
+				tileGrid.changeTile(90, indexY, indexX);
+			} else if (grid[indexY][indexX] == 23) {
+				grid[indexY][indexX] = 24;
+				tileGrid.changeTile(90, indexY, indexX);
+			} else if (grid[indexY][indexX] == 24) {
+				grid[indexY][indexX] = 19;
+				tileGrid.changeTile(90, indexY, indexX);
+			}
 		}
 		
 		private function camera(e:Event):void 

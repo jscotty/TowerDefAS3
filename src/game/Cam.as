@@ -93,11 +93,6 @@ package game
 			this.x += speedX;
 			this.y += speedY;
 			
-			trace("MouseX:" + mouseX + " stageWidth:" + stage.stageWidth / 6);
-			
-			if (mouseX > stage.stageWidth / 1.4) {
-				trace("move");
-			}
 			
 			if (left && !keypressed) {
 				keypressed = true;

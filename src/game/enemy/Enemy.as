@@ -121,12 +121,67 @@ package game.enemy
 				}
 			}
 			
-			if (myTile == 23) {
-				direction[0] = 0;
-				direction[1] = 1;
+			if (myTile == 19) {
+				if ( down > 0) {
+					direction[0] = 0;
+					direction[1] = 1;
+				}
+				else if ( up > 0) {
+					direction[0] = 0;
+					direction[1] = -1;
+				}
+			}else if (myTile == 20) {
+				if ( right > 0) {
+					direction[0] = 1;
+					direction[1] = 0;
+				} else if ( left > 0) {
+					direction[0] = -1;
+					direction[1] = 0;
+				}
+			}else if (myTile == 21) {
+				
+				if ( down > 0) {
+					direction[0] = 0;
+					direction[1] = 1;
+				} else if ( left > 0) {
+					direction[0] = -1;
+					direction[1] = 0;
+				}
+			}else if (myTile == 22) {
+				if ( up > 0) {
+					direction[0] = 0;
+					direction[1] = -1;
+				}else if ( left > 0) {
+					direction[0] = -1;
+					direction[1] = 0;
+				}
+			}else if (myTile == 23) {
+				if ( up > 0) {
+					direction[0] = 0;
+					direction[1] = -1;
+				}else if ( right > 0) {
+					direction[0] = 1;
+					direction[1] = 0;
+				}
+			} else if (myTile == 24) {
+				
+				if ( down > 0) {
+					direction[0] = 0;
+					direction[1] = 1;
+				}else if ( right > 0) {
+					direction[0] = 1;
+					direction[1] = 0;
+				}
 			} else if (myTile == 99) {
 				direction[0] = 0;
 				direction[1] = 0;
+				
+				this.scaleX -= 0.05;
+				this.scaleY -= 0.05;
+			}
+			if (this.scaleX <= 0.01) {
+				this.scaleX = 0;
+				this.scaleY = 0;
 			}
 			
 			
