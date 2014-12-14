@@ -79,7 +79,7 @@ package game
 		private var numColumns:Number = 36;
 		private var numRows:Number = 25;
 		
-		private var newTile;
+		private var newTile:Grid0;
 		
 		public function createGrid(cellWidth:Number, cellHeight:Number):void 
 		{
@@ -245,7 +245,7 @@ package game
 		{
 			removeChild(tileTexture[rowNr][colNr]);
 			newTile = new Grid0;
-			tileTexture[rowNr][rowNr] = newTile;
+			tileTexture[rowNr][colNr] = newTile;
 			addChild(newTile);
 			newTile.x = colNr * cellWidth  + 34;
 			newTile.y = rowNr * cellHeight + 34;

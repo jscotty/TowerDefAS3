@@ -28,6 +28,7 @@ package game
 		private var down:Boolean;
 		
 		private var keypressed:Boolean
+		private var pauseButton:PauseButton;
 		
 		public function Cam(color:uint,straal:Number, s:Stage) 
 		{
@@ -50,14 +51,33 @@ package game
 		
 		private function onDown(e:MouseEvent):void 
 		{
-			if (mouseX > stage.stageWidth / 1.2) {
-				right = true;
-			}else if (mouseX < stage.stageWidth / 5) {
-				left = true;
-			}else if (mouseY > stage.stageHeight / 1.2) {
-				down = true;
-			}else if (mouseY < stage.stageHeight / 5) {
-				up = true;
+			if(Game.pause == false){
+				if (mouseX > stage.stageWidth / 1.2) {
+					right = true;
+				}else if (mouseX < stage.stageWidth / 5) {
+					left = true;
+				}else if (mouseY > stage.stageHeight / 1.2) {
+					down = true;
+				}else if (mouseY < stage.stageHeight / 5) {
+					up = true;
+				}
+				if (e.target == Game.pauseButton) {
+					right = false;
+					left = false;
+					down = false;
+					up = false;
+					
+					Game.pause = true;
+				}
+			}else {
+				if (e.target == Game.pauseButton) {
+					right = false;
+					left = false;
+					down = false;
+					up = false;
+					
+					Game.pause = false;
+				}
 			}
 			
 		}
@@ -77,80 +97,75 @@ package game
 		
 		private function keyDown(e:KeyboardEvent):void 
 		{
-			if (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.D) {
-				right = true;
-			}else if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.A) {
-				left = true;
-			}else if (e.keyCode == Keyboard.UP || e.keyCode == Keyboard.W) {
-				up = true;
-			}else if (e.keyCode == Keyboard.DOWN || e.keyCode == Keyboard.S) {
-				down = true;
+			if(Game.pause == false){
+				if (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.D) {
+					right = true;
+				}else if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.A) {
+					left = true;
+				}else if (e.keyCode == Keyboard.UP || e.keyCode == Keyboard.W) {
+					up = true;
+				}else if (e.keyCode == Keyboard.DOWN || e.keyCode == Keyboard.S) {
+					down = true;
+				}
 			}
 		}
 		
 		private function update(e:Event):void 
 		{
-			this.x += speedX;
-			this.y += speedY;
-			
-			
-			if (left && !keypressed) {
-				keypressed = true;
-				speedX = -speed;
-			} else if (right && !keypressed) {
-				keypressed = true;
-				speedX = speed;
-			} else if (up && !keypressed) {
-				keypressed = true;
-				speedY = -speed;
-			} else if (down && !keypressed) {
-				keypressed = true;
-				speedY = speed;
-			} else if (speedX > 0) {
-				speedX -= slowSpeed;
-				keypressed = false;
-				if (speedX < 0.5) {
-					speedX = 0;
+			if (Game.pause == false) {
+				this.x += speedX;
+				this.y += speedY;
+				
+				
+				if (left && !keypressed) {
+					keypressed = true;
+					speedX = -speed;
+				} else if (right && !keypressed) {
+					keypressed = true;
+					speedX = speed;
+				} else if (up && !keypressed) {
+					keypressed = true;
+					speedY = -speed;
+				} else if (down && !keypressed) {
+					keypressed = true;
+					speedY = speed;
+				} else if (speedX > 0) {
+					speedX -= slowSpeed;
+					keypressed = false;
+					if (speedX <= 0) {
+						speedX = 0;
+					}
+				} else if (speedY > 0) {
+					speedY -= slowSpeed;
+					keypressed = false;
+					if (speedY <= 0) {
+						speedY = 0;
+					}
+				} else if (speedY < 0) {
+					speedY += slowSpeed;
+					keypressed = false;
+				} else if (speedX < 0) {
+					speedX += slowSpeed;
+					keypressed = false;
 				}
-			} else if (speedY > 0) {
-				speedY -= slowSpeed;
-				keypressed = false;
-				if (speedY < 0.5) {
-					speedY = 0;
+				if (this.x <= -235) {
+					keypressed = true;
+					this.x += 10;
+				}else if (this.x >= 2275) {
+					keypressed = true;
+					this.x -= 10;
+				}else if (this.y <= -1) {
+					keypressed = true;
+					this.y += 10;
+				}else if (this.y >= 1065) {
+					keypressed = true;
+					this.y -= 10;
+				}else {
+					keypressed = false;
 				}
-			} else if (speedY < 0) {
-				speedY += slowSpeed;
-				keypressed = false;
-			} else if (speedX < 0) {
-				speedX += slowSpeed;
-				keypressed = false;
-			}
-			if (this.x <= -235) {
-				keypressed = true;
-				this.x += 10;
-			}else if (this.x >= 2275) {
-				keypressed = true;
-				this.x -= 10;
-			}else if (this.y <= -1) {
-				keypressed = true;
-				this.y += 10;
-			}else if (this.y >= 1065) {
-				keypressed = true;
-				this.y -= 10;
 			}else {
-				keypressed = false;
+				
 			}
-		}
-		
-		public function redraw(reColor:int):void
-		{
-			var g:Graphics = this.graphics;
-			this.color = reColor;
-			this.straal = straal;
-			g.lineStyle(2);
-			g.beginFill(color);
-			g.drawCircle(0, 0, straal);
-			g.endFill();
 		}
 		
 		

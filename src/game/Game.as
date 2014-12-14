@@ -7,6 +7,7 @@ package game
 	import flash.events.MouseEvent;
 	import game.enemy.Enemy;
 	import game.enemy.EnemyFactory;
+	import menu.PauseMenu;
 	import utils.Vector2D;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -25,6 +26,12 @@ package game
 		private var char:Cam;
 		private var bg:BG;
 		
+		public static var pauseButton:PauseButton;
+		private var pauseMenu:PauseMenu;
+		public static var pause:Boolean = false;
+		private var closeMenu:String = "closeMenu";
+		
+		private var heart:Heart;
 		private var scope:Microscope;
 		
 		private var indexX:Number;
@@ -33,18 +40,13 @@ package game
 		public function Game(s:Stage) 
 		{
 			bg = new BG();
-			bg.x = -0;
-			bg.y = 110;
-			bg.scaleX = 0.78;
-			bg.scaleY = 0.78;
+			bg.x = 0;
+			bg.y = 0;
 			addChild(bg);
 			
 			tileGrid = new TileGrid();
 			addChild(tileGrid);
 			tileGrid.createGrid(64, 64);
-			
-			char = new Cam(0x000000, 1,s);
-			addChild(char);
 			
 			enemyFactory = new EnemyFactory();
 			_enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
@@ -58,14 +60,50 @@ package game
 			addEventListener(Event.ENTER_FRAME, update);
 			addEventListener(MouseEvent.CLICK, onClick);
 			
+			heart = new Heart();
+			heart.x = 2203;
+			addChildAt(heart, 2);
+			
 			scope = new Microscope();
-			addChildAt(scope,3);
+			addChild(scope);
+			
+			pauseButton = new PauseButton();
+			addChild(pauseButton);
+			pauseButton.visible = true;
+			
+			pauseButton.addEventListener(MouseEvent.CLICK, openMenu);
+			
+			char = new Cam(0x000000, 1,s);
+			addChildAt(char, 3);
+		}
+		
+		private function openMenu(e:MouseEvent):void 
+		{
+			pauseMenu = new PauseMenu();
+			pauseMenu.x = char.x;
+			pauseMenu.y = char.y;
+			addChild(pauseMenu);
+			pauseMenu.addEventListener(closeMenu, exitMenu);
+			pause = true
+			
+			pauseButton.visible = false;
+		}
+		
+		private function exitMenu(e:Event):void 
+		{
+			removeChild(pauseMenu);
+			pauseMenu = null;
+			pause = false;
+			pauseButton.visible = true;
 		}
 		
 		private function update(e:Event):void
 		{
 			scope.x = char.x;
 			scope.y = char.y;
+			
+			pauseButton.x = char.x + 750;
+			pauseButton.y = char.y + 30;
 			
 			indexX = Math.floor(mouseX / 64);
 			indexY = Math.floor(mouseY / 64);
@@ -91,6 +129,8 @@ package game
 			} else if (grid[indexY][indexX] == 24) {
 				grid[indexY][indexX] = 19;
 				tileGrid.changeTile(90, indexY, indexX);
+			}else {
+				
 			}
 		}
 		
