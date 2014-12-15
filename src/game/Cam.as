@@ -52,13 +52,13 @@ package game
 		private function onDown(e:MouseEvent):void 
 		{
 			if(Game.pause == false){
-				if (mouseX > stage.stageWidth / 1.2) {
+				if (mouseX > 675) {
 					right = true;
-				}else if (mouseX < stage.stageWidth / 5) {
+				}else if (mouseX < 125) {
 					left = true;
-				}else if (mouseY > stage.stageHeight / 1.2) {
+				}else if (mouseY > 500) {
 					down = true;
-				}else if (mouseY < stage.stageHeight / 5) {
+				}else if (mouseY < 100) {
 					up = true;
 				}
 				if (e.target == Game.pauseButton) {
