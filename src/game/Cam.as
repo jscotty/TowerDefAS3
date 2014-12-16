@@ -186,7 +186,7 @@ package game
 						MouseC.mouseInt = 0;
 					}
 			}else {
-				
+				MouseC.mouseInt = 0;
 			}
 		}
 		

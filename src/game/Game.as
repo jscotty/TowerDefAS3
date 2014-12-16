@@ -25,7 +25,7 @@ package game
 		private var _enemy:Enemy;
 		
 		private var tileGrid:TileGrid;
-		private var char:Cam;
+		private var cam:Cam;
 		private var bg:BG;
 		
 		public static var pauseButton:PauseButton;
@@ -80,19 +80,19 @@ package game
 			
 			pauseButton.addEventListener(MouseEvent.CLICK, openMenu);
 			
-			shop = new Shop();
+			shop = new Shop(s);
 			addChild(shop);
 			
-			char = new Cam(0x000000, 1,s);
-			addChildAt(char, 3);
+			cam = new Cam(0x000000, 1,s);
+			addChildAt(cam, 3);
 			
 		}
 		
 		private function openMenu(e:MouseEvent):void 
 		{
 			pauseMenu = new PauseMenu();
-			pauseMenu.x = char.x;
-			pauseMenu.y = char.y;
+			pauseMenu.x = cam.x;
+			pauseMenu.y = cam.y;
 			addChild(pauseMenu);
 			pauseMenu.addEventListener(closeMenu, exitMenu);
 			pause = true
@@ -111,17 +111,18 @@ package game
 		private function update(e:Event):void
 		{
 			
-			scope.x = char.x;
-			scope.y = char.y;
+			scope.x = cam.x;
+			scope.y = cam.y;
 			
-			pauseButton.x = char.x + 750;
-			pauseButton.y = char.y + 30;
+			pauseButton.x = cam.x + 750;
+			pauseButton.y = cam.y + 30;
 			
-			shop.x = char.x;
-			shop.y = char.y;
+			shop.x = cam.x;
+			shop.y = cam.y;
 			
 			indexX = Math.floor(mouseX / 64);
 			indexY = Math.floor(mouseY / 64);
+			
 		}
 		
 		private function onClick(e:MouseEvent):void 
@@ -129,7 +130,9 @@ package game
 			var grid:Array = TileGrid.tileGrid;
 			var gridTex:Array = TileGrid.tileTexture;
 			
-			if (grid[indexY][indexX] == 19) {
+			 if (grid[indexY][indexX]) {
+				 
+			}else if (grid[indexY][indexX] == 19) {
 				grid[indexY][indexX] = 20;
 				tileGrid.changeTile(0, indexY, indexX);
 			} else if (grid[indexY][indexX] == 20) {
@@ -151,7 +154,7 @@ package game
 		
 		private function camera(e:Event):void 
 		{
-			root.scrollRect = new Rectangle(char.x, char.y, 800, 600);
+			root.scrollRect = new Rectangle(cam.x, cam.y, 800, 600);
 		}
 	}
 
