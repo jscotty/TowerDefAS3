@@ -57,10 +57,8 @@ package menu
 			creditsText.visible = false;
 			
 			backButton = new Back();
-			backButton.x = 60;
-			backButton.y = 570;
-			backButton.scaleX = 0.5;
-			backButton.scaleY = 0.5;
+			backButton.x = 80;
+			backButton.y = 550;
 			addChild(backButton);
 			backButton.visible = false;
 			

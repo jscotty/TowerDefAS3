@@ -30,6 +30,8 @@ package game
 		private var keypressed:Boolean
 		private var pauseButton:PauseButton;
 		
+		private var hand:Boolean;
+		
 		public function Cam(color:uint,straal:Number, s:Stage) 
 		{
 			s.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
@@ -52,12 +54,12 @@ package game
 		private function onDown(e:MouseEvent):void 
 		{
 			if(Game.pause == false){
-				if (mouseX > 675) {
+				if (mouseY > 420) {
+					down = true;
+				}else if (mouseX > 675) {
 					right = true;
 				}else if (mouseX < 125) {
 					left = true;
-				}else if (mouseY > 500) {
-					down = true;
 				}else if (mouseY < 100) {
 					up = true;
 				}
@@ -68,6 +70,14 @@ package game
 					up = false;
 					
 					Game.pause = true;
+				}
+				for (var i:int = 0; i < Shop.btnArray.length; i++) {
+					if (e.target == Shop.btnArray[i]) {
+						right = false;
+						left = false;
+						down = false;
+						up = false;
+					}
 				}
 			}else {
 				if (e.target == Game.pauseButton) {
@@ -163,6 +173,18 @@ package game
 				}else {
 					keypressed = false;
 				}
+					
+					if (mouseY > 420) {
+						MouseC.mouseInt = 4;
+					}else if (mouseX > 675) {
+						MouseC.mouseInt = 2;
+					}else if (mouseX < 125) {
+						 MouseC.mouseInt = 3;
+					} else if (mouseY < 100) {
+						MouseC.mouseInt = 5;
+					}else {
+						MouseC.mouseInt = 0;
+					}
 			}else {
 				
 			}

@@ -1,5 +1,6 @@
 package game 
 {
+	import flash.filters.BlurFilter;
 	import game.Cam;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -12,6 +13,7 @@ package game
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
+	import flash.filters.BitmapFilterQuality;
 	
 	/**
 	 * ...
@@ -36,6 +38,10 @@ package game
 		
 		private var indexX:Number;
 		private var indexY:Number;
+		
+		private var shop:Shop;
+		private var blur:BlurFilter;
+		
 		
 		public function Game(s:Stage) 
 		{
@@ -64,6 +70,7 @@ package game
 			heart.x = 2203;
 			addChildAt(heart, 2);
 			
+			
 			scope = new Microscope();
 			addChild(scope);
 			
@@ -73,8 +80,12 @@ package game
 			
 			pauseButton.addEventListener(MouseEvent.CLICK, openMenu);
 			
+			shop = new Shop();
+			addChild(shop);
+			
 			char = new Cam(0x000000, 1,s);
 			addChildAt(char, 3);
+			
 		}
 		
 		private function openMenu(e:MouseEvent):void 
@@ -99,11 +110,15 @@ package game
 		
 		private function update(e:Event):void
 		{
+			
 			scope.x = char.x;
 			scope.y = char.y;
 			
 			pauseButton.x = char.x + 750;
 			pauseButton.y = char.y + 30;
+			
+			shop.x = char.x;
+			shop.y = char.y;
 			
 			indexX = Math.floor(mouseX / 64);
 			indexY = Math.floor(mouseY / 64);

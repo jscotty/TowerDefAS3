@@ -2,7 +2,9 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.ui.Mouse;
 	import game.Game;
+	import game.MouseC;
 	import menu.MainMenu;
 	
 	/**
@@ -15,6 +17,8 @@ package
 		
 		private var _mainMenu:MainMenu;
 		private var _game:Game;
+		
+		private var cursor:MouseC;
 		
 		public function Main():void 
 		{
@@ -29,7 +33,20 @@ package
 			_mainMenu = new MainMenu();
 			addChild(_mainMenu);
 			
+			Mouse.hide();
+			cursor = new MouseC();
+			addChild(cursor);
+			cursor.mouseEnabled = false;
+			
 			_mainMenu.addEventListener(_startGame, startGame);
+			
+			addEventListener(Event.ENTER_FRAME, mouseCurs);
+		}
+		
+		private function mouseCurs(e:Event):void 
+		{
+			cursor.x = mouseX;
+			cursor.y = mouseY;
 		}
 		
 		private function startGame(e:Event):void 
@@ -38,7 +55,7 @@ package
 			_mainMenu = null;
 			
 			_game = new Game(stage);
-			addChild(_game);
+			addChildAt(_game, 0);
 		}
 		
 	}
