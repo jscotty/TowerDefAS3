@@ -15,6 +15,8 @@ package game.enemy
 		private var _health:Number;
 		private var _mass:Number;
 		
+		private var death:String = "enemyDeath";
+		
 		private var direction:Array = [[],[]];
 		
 		private var posX:Number = 30;
@@ -26,7 +28,7 @@ package game.enemy
 			direction[0] = 1;
 		}
 		
-		private function update(e:Event):void 
+		public function update(e:Event):void 
 		{
 			if(Game.pause == false){
 				var indexX:Number = Math.floor((this.x - posX) / 64), indexY:Number = Math.floor((this.y - posY)/ 64);
@@ -52,7 +54,7 @@ package game.enemy
 				if (direction[1] == -1) posY = -30;
 				if (direction[1] == 1) posY = 30;
 				
-				if (direction[0] == 1 && nexTile == 0) {
+				if (direction[0] == 1 && nexTile <= 0) {
 					if ( right > 0) {
 						direction[0] = 1;
 						direction[1] = 0;
@@ -60,9 +62,6 @@ package game.enemy
 					else if ( down > 0) {
 						direction[0] = 0;
 						direction[1] = 1;
-						this.scaleX = 1;
-						this.scaleY = 1;
-						this.rotation = 90;
 					}
 					else if ( up > 0) {
 						direction[0] = 0;
@@ -72,7 +71,7 @@ package game.enemy
 						direction[0] = -1;
 						direction[1] = 0;
 					}
-				} else if (direction[0] == -1 && nexTile == 0) {
+				} else if (direction[0] == -1 && nexTile <= 0) {
 					if ( down > 0) {
 						direction[0] = 0;
 						direction[1] = 1;
@@ -89,7 +88,7 @@ package game.enemy
 						direction[0] = 1;
 						direction[1] = 0;
 					}
-				} else if (direction[1] == 1 && nexTile == 0) {
+				} else if (direction[1] == 1 && nexTile <= 0) {
 					if ( right > 0) {
 						direction[0] = 1;
 						direction[1] = 0;
@@ -106,13 +105,10 @@ package game.enemy
 						direction[0] = 0;
 						direction[1] = 1;
 					}
-				} else if (direction[1] == -1 && nexTile == 0) {
+				} else if (direction[1] == -1 && nexTile <= 0) {
 					if ( right > 0) {
 						direction[0] = 1;
 						direction[1] = 0;
-						this.scaleX = 1;
-						this.scaleY = 1;
-						this.rotation = 0;
 					}
 					else if ( left > 0) {
 						direction[0] = -1;
@@ -121,9 +117,6 @@ package game.enemy
 					else if ( down > 0) {
 						direction[0] = 0;
 						direction[1] = 1;
-						this.scaleX = 1;
-						this.scaleY = 1;
-						this.rotation = 90;
 					}
 					else if ( up > 0) {
 						direction[0] = 0;
@@ -188,10 +181,19 @@ package game.enemy
 					
 					this.scaleX -= 0.05;
 					this.scaleY -= 0.05;
+					
+					health -= 100;
 				}
 				if (this.scaleX <= 0.01) {
 					this.scaleX = 0;
 					this.scaleY = 0;
+				}
+				
+				if (health <= 0) {
+					scaleX -= 1;
+					scaleY -= 1;
+					dispatchEvent(new Event(death));
+					removeEventListener(Event.ENTER_FRAME, update);
 				}
 			}else {
 				
