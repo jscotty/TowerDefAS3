@@ -139,10 +139,8 @@ package game
 							}
 					else if (tileGrid[row][col] == 19) {
 						grid0(90);
-						_grid0.alpha = 0.7;
 					} else if (tileGrid[row][col] == 20) {
 						grid0(0);
-						_grid0.alpha = 0.7;
 					}
 				
 				}
@@ -240,8 +238,6 @@ package game
 			newTile.width = cellWidth;
 			newTile.height = cellHeight;
 			
-			newTile.alpha = 0.7;
-			
 			newTile.rotation = rot;
 			
 		}
@@ -256,8 +252,6 @@ package game
 			newTile.width = cellWidth;
 			newTile.height = cellHeight;
 			
-			newTile.alpha = 0.7;
-			
 			newTile.rotation = rot;
 			
 		}
@@ -271,9 +265,6 @@ package game
 			newTile.y = rowNr * cellHeight + 34;
 			newTile.width = cellWidth;
 			newTile.height = cellHeight;
-			
-			newTile.alpha = 0.7;
-			
 		}
 	}
 

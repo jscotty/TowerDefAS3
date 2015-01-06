@@ -23,6 +23,7 @@ package game
 	 */
 	public class Game extends Sprite 
 	{
+		
 		private var enemyFactory:EnemyFactory;
 		private var _enemy:Enemy;
 		public static var enemyArray:Array = [];
@@ -37,10 +38,12 @@ package game
 		
 		public static var pauseButton:PauseButton;
 		private var pauseMenu:PauseMenu;
-		public static var pause:Boolean = false;
+		public static var paused:Boolean = false;
 		private var closeMenu:String = "closeMenu";
 		private var buildTurret:String = "buildTurret";
 		private var death:String = "enemyDeath";
+		private var backgroundSfx:String = "looptrack.mp3";
+		private var shootSfx:String = "shoot.mp3";
 		
 		private var heart:Heart;
 		private var scope:Microscope;
@@ -54,8 +57,16 @@ package game
 		public static var difX:Number = 0;
 		public static var difY:Number = 0;
 		
+		private var soundSystem:SoundSystem;
+		
 		public function Game(s:Stage) 
 		{
+			soundSystem = new SoundSystem();
+			soundSystem.addMusic(backgroundSfx);
+			soundSystem.addMusic(shootSfx);
+			//soundSystem.playMusic(0, 1, true);
+			//soundSystem.playMusic(1, 1, true);
+			
 			bg = new BG();
 			bg.x = 0;
 			bg.y = 0;
@@ -135,7 +146,7 @@ package game
 			pauseMenu.y = cam.y;
 			addChild(pauseMenu);
 			pauseMenu.addEventListener(closeMenu, exitMenu);
-			pause = true
+			paused = true
 			
 			pauseButton.visible = false;
 		}
@@ -144,13 +155,13 @@ package game
 		{
 			removeChild(pauseMenu);
 			pauseMenu = null;
-			pause = false;
+			paused = false;
 			pauseButton.visible = true;
 		}
 		
 		private function update(e:Event):void
 		{
-			
+			if(!paused){
 			scope.x = cam.x;
 			scope.y = cam.y;
 			
@@ -167,102 +178,108 @@ package game
 			if (difbla < 0) {
 				//trace("bruh");
 			}*/
-			
+			}else {
+				
+			}
 			
 		}
 		
 		private function onClick(e:MouseEvent):void 
 		{
-			var grid:Array = TileGrid.tileGrid;
-			var gridTex:Array = TileGrid.tileTexture;
-			
-			/*
-			 * tile 19 = - recht
-			 * 
-			 * tile 20 = | omhoog/omlaag
-			 * 
-			 * tile 21 = -| links omlaag / 90
-			 * 
-			 * tile 22 = _| links omhoog / 180
-			 * 
-			 * tile 23 = |_ omhoog rechts / 270
-			 * 
-			 * tile 24 = |- omlaag rechts / 0
-			 */
-			if (grid[indexY][indexX] == 19) {
-				if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-					grid[indexY][indexX] = 25;
-					tileGrid.changeTileMultie(indexY, indexX);
-				} else if (grid[indexY][indexX + 1] > 0 && grid[indexY][indexX - 1] <= 0) {
-					grid[indexY][indexX] = 23;
-					tileGrid.changeTileCorner(270, indexY, indexX);
-				} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] <= 0) {
-					grid[indexY][indexX] = 22;
-					tileGrid.changeTileCorner(180, indexY, indexX);
-				}  else {
-					grid[indexY][indexX] = 19;
-					tileGrid.changeTile(00, indexY, indexX);
-				}
-			} else if (grid[indexY][indexX] == 20) {
-				if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-					grid[indexY][indexX] = 25;
-					tileGrid.changeTileMultie(indexY, indexX);
-				} else if (grid[indexY + 1][indexX] > 0 && grid[indexY - 1][indexX] <= 0) {
-					grid[indexY][indexX] = 21;
-					tileGrid.changeTileCorner(90, indexY, indexX);
-				} else if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] <= 0) {
-					grid[indexY][indexX] = 22;
-					tileGrid.changeTileCorner(180, indexY, indexX);
-				}  else {
-					grid[indexY][indexX] = 20;
-					tileGrid.changeTile(0, indexY, indexX);
-				}
-			} else if (grid[indexY][indexX] == 21) {
-				if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-					grid[indexY][indexX] = 19;
-					tileGrid.changeTile(90, indexY, indexX);
-				} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-					grid[indexY][indexX] = 20;
-					tileGrid.changeTile(0, indexY, indexX);
-				} else {
-				}
-			} else if (grid[indexY][indexX] == 22) {
-				if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-					grid[indexY][indexX] = 19;
-					tileGrid.changeTile(90, indexY, indexX);
-				} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-					grid[indexY][indexX] = 20;
-					tileGrid.changeTile(0, indexY, indexX);
-				} else {
-				}
-			} else if (grid[indexY][indexX] == 23) {
-				if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-					grid[indexY][indexX] = 19;
-					tileGrid.changeTile(90, indexY, indexX);
-				} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-					grid[indexY][indexX] = 20;
-					tileGrid.changeTile(0, indexY, indexX);
-				} else {
-				}
-			} else if (grid[indexY][indexX] == 24) {
-				if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-					grid[indexY][indexX] = 19;
-					tileGrid.changeTile(90, indexY, indexX);
-				} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-					grid[indexY][indexX] = 20;
-					tileGrid.changeTile(0, indexY, indexX);
-				} else {
-				}
-			} else if (grid[indexY][indexX] == 25) {
-				if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-					grid[indexY][indexX] = 19;
-					tileGrid.changeTile(90, indexY, indexX);
-				} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-					grid[indexY][indexX] = 20;
-					tileGrid.changeTile(0, indexY, indexX);
-				} else {
+			if(!paused){
+				var grid:Array = TileGrid.tileGrid;
+				var gridTex:Array = TileGrid.tileTexture;
+				
+				/*
+				 * tile 19 = - recht
+				 * 
+				 * tile 20 = | omhoog/omlaag
+				 * 
+				 * tile 21 = -| links omlaag / 90
+				 * 
+				 * tile 22 = _| links omhoog / 180
+				 * 
+				 * tile 23 = |_ omhoog rechts / 270
+				 * 
+				 * tile 24 = |- omlaag rechts / 0
+				 */
+				if (grid[indexY][indexX] == 19) {
+					if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
+						grid[indexY][indexX] = 25;
+						tileGrid.changeTileMultie(indexY, indexX);
+					} else if (grid[indexY][indexX + 1] > 0 && grid[indexY][indexX - 1] <= 0) {
+						grid[indexY][indexX] = 23;
+						tileGrid.changeTileCorner(270, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] <= 0) {
+						grid[indexY][indexX] = 22;
+						tileGrid.changeTileCorner(180, indexY, indexX);
+					}  else {
+						grid[indexY][indexX] = 19;
+						tileGrid.changeTile(00, indexY, indexX);
+					}
+				} else if (grid[indexY][indexX] == 20) {
+					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
+						grid[indexY][indexX] = 25;
+						tileGrid.changeTileMultie(indexY, indexX);
+					} else if (grid[indexY + 1][indexX] > 0 && grid[indexY - 1][indexX] <= 0) {
+						grid[indexY][indexX] = 21;
+						tileGrid.changeTileCorner(90, indexY, indexX);
+					} else if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] <= 0) {
+						grid[indexY][indexX] = 22;
+						tileGrid.changeTileCorner(180, indexY, indexX);
+					}  else {
+						grid[indexY][indexX] = 20;
+						tileGrid.changeTile(0, indexY, indexX);
+					}
+				} else if (grid[indexY][indexX] == 21) {
+					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
+						grid[indexY][indexX] = 19;
+						tileGrid.changeTile(90, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
+						grid[indexY][indexX] = 20;
+						tileGrid.changeTile(0, indexY, indexX);
+					} else {
+					}
+				} else if (grid[indexY][indexX] == 22) {
+					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
+						grid[indexY][indexX] = 19;
+						tileGrid.changeTile(90, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
+						grid[indexY][indexX] = 20;
+						tileGrid.changeTile(0, indexY, indexX);
+					} else {
+					}
+				} else if (grid[indexY][indexX] == 23) {
+					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
+						grid[indexY][indexX] = 19;
+						tileGrid.changeTile(90, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
+						grid[indexY][indexX] = 20;
+						tileGrid.changeTile(0, indexY, indexX);
+					} else {
+					}
+				} else if (grid[indexY][indexX] == 24) {
+					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
+						grid[indexY][indexX] = 19;
+						tileGrid.changeTile(90, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
+						grid[indexY][indexX] = 20;
+						tileGrid.changeTile(0, indexY, indexX);
+					} else {
+					}
+				} else if (grid[indexY][indexX] == 25) {
+					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
+						grid[indexY][indexX] = 19;
+						tileGrid.changeTile(90, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
+						grid[indexY][indexX] = 20;
+						tileGrid.changeTile(0, indexY, indexX);
+					} else {
+					}
+				}else {
 				}
 			}else {
+				
 			}
 		}
 		

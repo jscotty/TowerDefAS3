@@ -39,24 +39,31 @@ package game.tower
 		
 		private function update(e:Event):void 
 		{
+			if(!Game.paused){
 			var grid:Array = TileGrid.tileGrid;
 			enemy = Game.enemyArray;
+			
+			this.rotation = 0;
+			
 			for (var i:int = 0; i < enemy.length; i++) {
 				difX[i] = Math.floor(enemy[i].x - this.x);
 				difY[i] = Math.floor(enemy[i].y - this.y);
 				//trace("difX("+i+"):("+difX+") difY("+i+"):("+difY+")");
 				
 				dif = new Vector2D(difX[i], difY[i]);
-					trace(dif);
+					//trace(dif);
 				
 				diff = Math.floor(dif.length);
-				//trace(diff + "( " + i + " )");
+				trace("dif: "+dif);
 				if (diff < 120) {
 						this.rotation = dif.angle * 180 / Math.PI;
 				}else {
-					this.rotation = 0;
+				//	this.rotation = 0;
 				}
 				
+				
+			}
+			}else {
 				
 			}
 		}
