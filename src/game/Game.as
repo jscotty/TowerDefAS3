@@ -125,7 +125,13 @@ package game
 		
 		private function enemyDeath(e:Event):void 
 		{
-			
+			var l:int = enemyArray.length - 1;
+			for (var i:int = l; i > 0; i--) {
+				if (enemyArray[i].died == true) {
+					removeChild(enemyArray[i]);
+					enemyArray.splice(i, 1);
+				}
+			}
 		}
 		
 		private function spawnTurret(e:Event):void 
@@ -203,33 +209,41 @@ package game
 				 * 
 				 * tile 24 = |- omlaag rechts / 0
 				 */
-				if (grid[indexY][indexX] == 19) {
+				if (grid[indexY][indexX] == 18) {
 					if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-						grid[indexY][indexX] = 25;
+						grid[indexY][indexX] = 29;
 						tileGrid.changeTileMultie(indexY, indexX);
 					} else if (grid[indexY][indexX + 1] > 0 && grid[indexY][indexX - 1] <= 0) {
-						grid[indexY][indexX] = 23;
+						grid[indexY][indexX] = 27;
 						tileGrid.changeTileCorner(270, indexY, indexX);
 					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] <= 0) {
-						grid[indexY][indexX] = 22;
+						grid[indexY][indexX] = 28;
 						tileGrid.changeTileCorner(180, indexY, indexX);
 					}  else {
-						grid[indexY][indexX] = 19;
-						tileGrid.changeTile(00, indexY, indexX);
+					}
+				} else if (grid[indexY][indexX] == 19) {
+					if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
+						grid[indexY][indexX] = 29;
+						tileGrid.changeTileMultie(indexY, indexX);
+					} else if (grid[indexY][indexX + 1] > 0 && grid[indexY][indexX - 1] <= 0) {
+						grid[indexY][indexX] = 27;
+						tileGrid.changeTileCorner(270, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] <= 0) {
+						grid[indexY][indexX] = 28;
+						tileGrid.changeTileCorner(180, indexY, indexX);
+					}  else {
 					}
 				} else if (grid[indexY][indexX] == 20) {
 					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
 						grid[indexY][indexX] = 25;
 						tileGrid.changeTileMultie(indexY, indexX);
 					} else if (grid[indexY + 1][indexX] > 0 && grid[indexY - 1][indexX] <= 0) {
-						grid[indexY][indexX] = 21;
+						grid[indexY][indexX] = 26;
 						tileGrid.changeTileCorner(90, indexY, indexX);
 					} else if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] <= 0) {
-						grid[indexY][indexX] = 22;
+						grid[indexY][indexX] = 28;
 						tileGrid.changeTileCorner(180, indexY, indexX);
 					}  else {
-						grid[indexY][indexX] = 20;
-						tileGrid.changeTile(0, indexY, indexX);
 					}
 				} else if (grid[indexY][indexX] == 21) {
 					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
@@ -240,52 +254,30 @@ package game
 						tileGrid.changeTile(0, indexY, indexX);
 					} else {
 					}
-				} else if (grid[indexY][indexX] == 22) {
-					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
+				} else if (grid[indexY][indexX] == 26 || grid[indexY][indexX] == 27 || grid[indexY][indexX] == 28 || grid[indexY][indexX] == 29) {
+					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0 && grid[indexY][indexX + 1] > 0) {
 						grid[indexY][indexX] = 19;
 						tileGrid.changeTile(90, indexY, indexX);
-					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-						grid[indexY][indexX] = 20;
+					} else if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0 && grid[indexY][indexX - 1] > 0) {
+						grid[indexY][indexX] = 18;
+						tileGrid.changeTile(270, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0 && grid[indexY - 1][indexX] > 0) {
+						grid[indexY][indexX] = 21;
 						tileGrid.changeTile(0, indexY, indexX);
+					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0 && grid[indexY + 1][indexX] > 0) {
+						grid[indexY][indexX] = 20;
+						tileGrid.changeTile(180, indexY, indexX);
 					} else {
 					}
-				} else if (grid[indexY][indexX] == 23) {
-					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-						grid[indexY][indexX] = 19;
-						tileGrid.changeTile(90, indexY, indexX);
-					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-						grid[indexY][indexX] = 20;
-						tileGrid.changeTile(0, indexY, indexX);
-					} else {
-					}
-				} else if (grid[indexY][indexX] == 24) {
-					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-						grid[indexY][indexX] = 19;
-						tileGrid.changeTile(90, indexY, indexX);
-					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-						grid[indexY][indexX] = 20;
-						tileGrid.changeTile(0, indexY, indexX);
-					} else {
-					}
-				} else if (grid[indexY][indexX] == 25) {
-					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
-						grid[indexY][indexX] = 19;
-						tileGrid.changeTile(90, indexY, indexX);
-					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
-						grid[indexY][indexX] = 20;
-						tileGrid.changeTile(0, indexY, indexX);
-					} else {
-					}
-				}else {
-				}
-			}else {
+				} else {
 				
-			}
+				}
+		}
 		}
 		
 		private function camera(e:Event):void 
 		{
-			root.scrollRect = new Rectangle(cam.x, cam.y, 800, 600);
+			if(!paused)root.scrollRect = new Rectangle(cam.x, cam.y, 800, 600);
 		}
 	}
 

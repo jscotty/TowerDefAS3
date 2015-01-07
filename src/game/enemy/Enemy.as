@@ -3,6 +3,7 @@ package game.enemy
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import game.Game;
+	import game.Shop;
 	import game.TileGrid;
 	import utils.Vector2D;
 	/**
@@ -22,6 +23,9 @@ package game.enemy
 		private var posX:Number = 30;
 		private var posY:Number = 30;
 		
+		private var count:int = 1;
+		public var died:Boolean = false;
+		
 		public function enemyBehaviour():void
 		{
 			addEventListener(Event.ENTER_FRAME, update);
@@ -30,7 +34,7 @@ package game.enemy
 		
 		public function update(e:Event):void 
 		{
-			if(Game.pause == false){
+			if(Game.paused == false){
 				var indexX:Number = Math.floor((this.x - posX) / 64), indexY:Number = Math.floor((this.y - posY)/ 64);
 				var tilegrid:Array = TileGrid.tileGrid;
 				
@@ -125,56 +129,17 @@ package game.enemy
 				}
 				
 				if (myTile == 19) {
-					if ( down > 0) {
-						direction[0] = 0;
-						direction[1] = 1;
-					}
-					else if ( up > 0) {
-						direction[0] = 0;
-						direction[1] = -1;
-					}
-				}else if (myTile == 20) {
-					if ( right > 0) {
-						direction[0] = 1;
-						direction[1] = 0;
-					} else if ( left > 0) {
-						direction[0] = -1;
-						direction[1] = 0;
-					}
-				}else if (myTile == 21) {
-					
-					if ( down > 0) {
-						direction[0] = 0;
-						direction[1] = 1;
-					} else if ( left > 0) {
-						direction[0] = -1;
-						direction[1] = 0;
-					}
-				}else if (myTile == 22) {
-					if ( up > 0) {
-						direction[0] = 0;
-						direction[1] = -1;
-					}else if ( left > 0) {
-						direction[0] = -1;
-						direction[1] = 0;
-					}
-				}else if (myTile == 23) {
-					if ( up > 0) {
-						direction[0] = 0;
-						direction[1] = -1;
-					}else if ( right > 0) {
-						direction[0] = 1;
-						direction[1] = 0;
-					}
-				} else if (myTile == 24) {
-					
-					if ( down > 0) {
-						direction[0] = 0;
-						direction[1] = 1;
-					}else if ( right > 0) {
-						direction[0] = 1;
-						direction[1] = 0;
-					}
+						direction[0] = direction[0];
+						direction[1] = direction[1];
+				} else if (myTile == 19) {
+						direction[0] = direction[0];
+						direction[1] = direction[1];
+				} else if (myTile == 20) {
+						direction[0] = direction[0];
+						direction[1] = direction[1];
+				} else if (myTile == 21) {
+						direction[0] = direction[0];
+						direction[1] = direction[1];
 				} else if (myTile == 99) {
 					direction[0] = 0;
 					direction[1] = 0;
@@ -190,12 +155,18 @@ package game.enemy
 				}
 				
 				if (health <= 0) {
-					scaleX -= 1;
-					scaleY -= 1;
+					scaleX -= 0.1;
+					scaleY -= 0.1;
 					dispatchEvent(new Event(death));
-					removeEventListener(Event.ENTER_FRAME, update);
+					
+					count ++;
+					trace(count);
+					if (count >= 10) {
+						died = true;
+						removeEventListener(Event.ENTER_FRAME, update);
+					}
 				}
-			}else {
+			} else {
 				
 			}
 		}

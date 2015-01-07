@@ -54,8 +54,8 @@ package game.tower
 					//trace(dif);
 				
 				diff = Math.floor(dif.length);
-				trace("dif: "+dif);
-				if (diff < 120) {
+				//trace("dif: "+dif);
+				if (diff < 150) {
 						this.rotation = dif.angle * 180 / Math.PI;
 				}else {
 				//	this.rotation = 0;

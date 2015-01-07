@@ -13,6 +13,7 @@ package game
 	public class Shop extends Sprite
 	{
 		private var btn;
+		
 		public static var btnArray:Array = [];
 		
 		private var counter:int;
@@ -34,10 +35,10 @@ package game
 					btnArray.push(btn);
 					addChild(btn);
 					
-					btn.width = 90;
-					btn.height = 90;
-					btn.x = 210 + i * 100;
-					btn.y = 550;
+					btn.width = 60;
+					btn.height = 60;
+					btn.x = 250 + i * 80;
+					btn.y = 560;
 			}
 			towerBuildArray = new Array;
 			for (var b:int = 0; b < 5; b++) {
@@ -73,9 +74,7 @@ package game
 				if (towerBuildArray[0]) {
 					grid[iY][iX] = 0;
 					dispatchEvent(new Event(buildTurret));
-					trace("place turret");
 				} else {
-					trace("je bent een fucking sukkel dat je dit probeert");
 				}
 				
 			}
@@ -85,8 +84,9 @@ package game
 					if (towerBuildArray[i]) {
 						towerBuildArray[i] = false;
 					} else {
-						towerBuildArray[i] = true;
+						towerBuildArray[i] = true;9
 					}
+				}else {
 				}
 			}
 			

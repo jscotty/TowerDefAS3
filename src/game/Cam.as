@@ -53,7 +53,7 @@ package game
 		
 		private function onDown(e:MouseEvent):void 
 		{
-			if(Game.pause == false){
+			if(Game.paused == false){
 				if (mouseY > 420) {
 					down = true;
 				}else if (mouseX > 675) {
@@ -69,7 +69,7 @@ package game
 					down = false;
 					up = false;
 					
-					Game.pause = true;
+					Game.paused = true;
 				}
 				for (var i:int = 0; i < Shop.btnArray.length; i++) {
 					if (e.target == Shop.btnArray[i]) {
@@ -86,7 +86,7 @@ package game
 					down = false;
 					up = false;
 					
-					Game.pause = false;
+					Game.paused = false;
 				}
 			}
 			
@@ -107,7 +107,7 @@ package game
 		
 		private function keyDown(e:KeyboardEvent):void 
 		{
-			if(Game.pause == false){
+			if(Game.paused == false){
 				if (e.keyCode == Keyboard.RIGHT || e.keyCode == Keyboard.D) {
 					right = true;
 				}else if (e.keyCode == Keyboard.LEFT || e.keyCode == Keyboard.A) {
@@ -122,7 +122,7 @@ package game
 		
 		private function update(e:Event):void 
 		{
-			if (Game.pause == false) {
+			if (Game.paused == false) {
 				this.x += speedX;
 				this.y += speedY;
 				
