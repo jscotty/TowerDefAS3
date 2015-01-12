@@ -8,14 +8,14 @@ package game.enemy.enemyType
 	 */
 	public class NormalEnemy extends Enemy
 	{
-		private var enemy:Enemy2;
+		private var enemy:Enemy1;
 		
 		public function NormalEnemy() 
 		{
-			enemy = new Enemy2();
+			enemy = new Enemy1();
 			addChild(enemy);
-			enemy.width = 64;
-			enemy.height = 33;
+			enemy.width = 32;
+			enemy.height = 32;
 			
 			health = 100;
 			speed = 5;

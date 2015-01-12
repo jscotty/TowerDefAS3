@@ -69,7 +69,6 @@ package game
 			
 			bg = new BG();
 			bg.x = 0 + 320;
-			bg.scaleX = 1.2;
 			bg.y = 0;
 			addChild(bg);
 			
@@ -86,7 +85,7 @@ package game
 			addEventListener(MouseEvent.CLICK, onClick);
 			
 			heart = new Heart();
-			heart.x = 2523;
+			heart.x = 2690;
 			addChildAt(heart, 2);
 			
 			towerFactory = new TowerFactory;
@@ -96,6 +95,8 @@ package game
 			
 			pauseButton = new PauseButton();
 			addChild(pauseButton);
+			pauseButton.scaleX = 0.5;
+			pauseButton.scaleY = 0.5;
 			pauseButton.visible = true;
 			
 			pauseButton.addEventListener(MouseEvent.CLICK, openMenu);
