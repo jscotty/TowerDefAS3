@@ -70,7 +70,7 @@ package game
 		{
 			
 			var grid:Array = TileGrid.tileGrid;
-			if (grid[iY][iX] == -1) {
+			if (grid[iY][iX] <= -1) {
 				if (towerBuildArray[0]) {
 					grid[iY][iX] = 0;
 					dispatchEvent(new Event(buildTurret));

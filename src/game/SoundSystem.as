@@ -34,7 +34,7 @@ package game
 			sound.push(sfx);
 		}
 		
-		public function playMusic(id:int, volume:int, loop:Boolean) {
+		public function playMusic(id:int, volume:int, loop:Boolean):void {
 			var soundTrans:SoundTransform = new SoundTransform(volume, 0);
 			
 			if(!loop){

@@ -68,7 +68,8 @@ package game
 			//soundSystem.playMusic(1, 1, true);
 			
 			bg = new BG();
-			bg.x = 0;
+			bg.x = 0 + 320;
+			bg.scaleX = 1.2;
 			bg.y = 0;
 			addChild(bg);
 			
@@ -85,7 +86,7 @@ package game
 			addEventListener(MouseEvent.CLICK, onClick);
 			
 			heart = new Heart();
-			heart.x = 2203;
+			heart.x = 2523;
 			addChildAt(heart, 2);
 			
 			towerFactory = new TowerFactory;
@@ -115,7 +116,7 @@ package game
 				_enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
 				enemyArray.push(_enemy);
 				addChildAt(_enemy,2);
-				_enemy.x = (34 * 6 - 34) * i + 100;
+				_enemy.x = (34 * 6 - 34) * i + 100 - 320;
 				_enemy.y = 64 * 6 - 34;
 				_enemy.enemyBehaviour();
 				

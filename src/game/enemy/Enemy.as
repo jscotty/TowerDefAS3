@@ -140,6 +140,38 @@ package game.enemy
 				} else if (myTile == 21) {
 						direction[0] = direction[0];
 						direction[1] = direction[1];
+					} else if (myTile == 26) {
+						if (direction[0] == 1) {
+							direction[0] = 0;
+							direction[1] = 1;
+						} else if (direction[1] == -1) {
+							direction[0] = -1;
+							direction[1] = 0;
+						}
+					} else if (myTile == 27) {
+						if (direction[0] == -1) {
+							direction[0] = 0;
+							direction[1] = -1;
+						} else if (direction[1] == 1) {
+							direction[0] = 1;
+							direction[1] = 0;
+						}
+					} else if (myTile == 28) {
+						if (direction[0] == 1) {
+							direction[0] = 0;
+							direction[1] = -1;
+						} else if (direction[1] == 1) {
+							direction[0] = -1;
+							direction[1] = 0;
+						}
+					}else if (myTile == 29) {
+						if (direction[0] == -1) {
+							direction[0] = 0;
+							direction[1] = 1;
+						} else if (direction[1] == -1) {
+							direction[0] = 1;
+							direction[1] = 0;
+						}
 				} else if (myTile == 99) {
 					direction[0] = 0;
 					direction[1] = 0;

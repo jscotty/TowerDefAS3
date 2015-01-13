@@ -158,7 +158,7 @@ package game
 					speedX += slowSpeed;
 					keypressed = false;
 				}
-				if (this.x <= -235) {
+				if (this.x <= -10) {
 					keypressed = true;
 					this.x += 10;
 				}else if (this.x >= 2275) {
@@ -173,7 +173,6 @@ package game
 				}else {
 					keypressed = false;
 				}
-					
 					if (mouseY > 420) {
 						MouseC.mouseInt = 4;
 					}else if (mouseX > 675) {
