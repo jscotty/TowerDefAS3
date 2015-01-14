@@ -7,6 +7,7 @@ package game
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
+	import game.levelCreator.TileShop;
 	/**
 	 * ...
 	 * @author justin Bieshaar
@@ -73,6 +74,14 @@ package game
 				}
 				for (var i:int = 0; i < Shop.btnArray.length; i++) {
 					if (e.target == Shop.btnArray[i]) {
+						right = false;
+						left = false;
+						down = false;
+						up = false;
+					}
+				}
+				for (var i:int = 0; i < TileShop.btnArray.length; i++) {
+					if (e.target == TileShop.btnArray[i]) {
 						right = false;
 						left = false;
 						down = false;

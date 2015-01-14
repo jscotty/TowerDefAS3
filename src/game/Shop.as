@@ -70,7 +70,7 @@ package game
 		private function onClick(e:MouseEvent):void 
 		{
 			
-			var grid:Array = Grid.tileGrid;
+			var grid:Array = TileGrid.tileGrid;
 			if (grid[iY][iX] <= -1) {
 				if (towerBuildArray[0]) {
 					grid[iY][iX] = 0;

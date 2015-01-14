@@ -48,7 +48,7 @@ package game.tower
 		private function update(e:Event):void 
 		{
 			if(!Game.paused){
-			var grid:Array = Grid.tileGrid;
+			var grid:Array = TileGrid.tileGrid;
 			enemy = Game.enemyArray;
 			
 			this.rotation = 0;

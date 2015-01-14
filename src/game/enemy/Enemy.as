@@ -37,7 +37,7 @@ package game.enemy
 		{
 			if(Game.paused == false){
 				var indexX:Number = Math.floor((this.x - posX) / 64), indexY:Number = Math.floor((this.y - posY)/ 64);
-				var tilegrid:Array = Grid.tileGrid;
+				var tilegrid:Array = TileGrid.tileGrid;
 				
 				//dir 1 is X direction
 				this.x += direction[0] * speed;

@@ -4,14 +4,15 @@ package game
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import game.grid.Grid;
+	import game.grid.CreatedGrid;
 	/**
 	 * ...
 	 * @author justin Bieshaar
 	 */
 	public class TileGrid extends Sprite
 	{
-		private var tileGrid:Array = [];
-		private var tileTexture:Array = Grid.tileTexture;
+		public static var tileGrid:Array = [];
+		public static var tileTexture:Array = [];
 		
 		private var row:int;
 		private var col:int;
@@ -34,21 +35,37 @@ package game
 		private var newTile;
 		private var _gridRed3Corn:GridKwabR3Way;
 		private var _gridBlue3Corn:GridKwabB3Way;
+		private var _grid:Sprite;
 		
-		private var game:String = "game";
-		private var creator:String = "creator";
+		public var gameGrid:String = "game";
+		public var creatorGrid:String = "creator";
 		
 		public function createGrid(cellWidth:Number, cellHeight:Number, mode:String):void 
 		{
-			if(mode == game){
+			if(mode == gameGrid){
 				tileGrid = Grid.tileGrid;
 				tileTexture = Grid.tileTexture;
-			}
+			} else if(mode == creatorGrid){
+				tileGrid = CreatedGrid.tileGrid;
+				tileTexture = CreatedGrid.tileTexture;
+				
+				_grid = new Sprite();
+				_grid.graphics.clear();
+				_grid.graphics.lineStyle(1, 0xffffff);
+				_grid.alpha = 0.1;
+			} 
 			
 			this.cellWidth = cellWidth;
 			this.cellHeight = cellHeight;
 			 for (row = 0; row < numRows; row++){
-				for (col = 0; col < numColumns; col++){
+				for (col = 0; col < numColumns; col++) {
+					if (mode == creatorGrid) {
+						_grid.graphics.moveTo(col * cellWidth + 0, 0+ 0);
+						_grid.graphics.lineTo(col * cellWidth + 0, cellHeight * numRows + 1);
+						_grid.graphics.moveTo(0, row * cellHeight + 6);
+						_grid.graphics.lineTo(cellWidth * numColumns + 6, row * cellHeight + 6);
+						addChild(_grid);
+					}
 					if (tileGrid[row][col] == 0){
 						// nothing
 					} else if (tileGrid[row][col] == 1 || tileGrid[row][col] == 99 || tileGrid[row][col] == 7) {

@@ -4,6 +4,7 @@ package
 	import flash.events.Event;
 	import flash.ui.Mouse;
 	import game.Game;
+	import game.levelCreator.LevelCreator;
 	import game.MouseC;
 	import menu.MainMenu;
 	
@@ -17,6 +18,7 @@ package
 		
 		private var _mainMenu:MainMenu;
 		private var _game:Game;
+		private var _creator:LevelCreator;
 		
 		private var cursor:MouseC;
 		
@@ -54,8 +56,11 @@ package
 			removeChild(_mainMenu);
 			_mainMenu = null;
 			
-			_game = new Game(stage);
-			addChildAt(_game, 0);
+			/*_game = new Game(stage);
+			addChildAt(_game, 0);*/
+			
+			_creator = new LevelCreator(stage);
+			addChildAt(_creator, 0);
 		}
 		
 	}

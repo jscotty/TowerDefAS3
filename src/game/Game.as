@@ -51,8 +51,6 @@ package game
 		private var strong:String = "strong";
 		private var heavy:String = "heavy";
 		
-		private var mode:String = "";
-		
 		private var heart:Heart;
 		private var scope:Microscope;
 		
@@ -89,15 +87,10 @@ package game
 			
 			tileGrid = new TileGrid();
 			addChildAt(tileGrid, 1);
-			tileGrid.createGrid(64, 64, mode);
+			tileGrid.createGrid(64, 64, tileGrid.gameGrid);
 			
 				spawnEnemy();
 			
-			
-			s.addEventListener(Event.ENTER_FRAME, camera);
-			
-			addEventListener(Event.ENTER_FRAME, update);
-			addEventListener(MouseEvent.CLICK, onClick);
 			
 			heart = new Heart();
 			heart.x = 2690;
@@ -130,6 +123,11 @@ package game
 			particleSystem = new ParticleSystem;
 			addChildAt(particleSystem, 6);
 			particleSystem.startParticle(normal, 1);
+			
+			s.addEventListener(Event.ENTER_FRAME, camera);
+			
+			addEventListener(Event.ENTER_FRAME, update);
+			addEventListener(MouseEvent.CLICK, onClick);
 		}
 		
 		private function loadingDone(e:Event):void 
@@ -226,8 +224,8 @@ package game
 		private function onClick(e:MouseEvent):void 
 		{
 			if(!paused){
-				var grid:Array = Grid.tileGrid;
-				var gridTex:Array = Grid.tileTexture;
+				var grid:Array = TileGrid.tileGrid;
+				var gridTex:Array = TileGrid.tileTexture;
 				
 				/*
 				 * tile 19 = - recht
