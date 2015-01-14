@@ -4,6 +4,7 @@ package game.tower
 	import flash.events.Event;
 	import game.Game;
 	import game.TileGrid;
+	import game.grid.Grid;
 	import utils.Vector2D;
 	/**
 	 * ...
@@ -13,6 +14,7 @@ package game.tower
 	{
 		private var _damage:Number;
 		private var _coolDown:Number;
+		private var _bullet:String;
 		private var spaceX:Number = 70;
 		private var spaceY:Number = 70;
 		
@@ -28,6 +30,12 @@ package game.tower
 		private var targetEnemy:Vector2D;
 		
 		public var diff:int;
+		private var counter:int = 0;
+		
+		private var weak:String = "weak";
+		private var normal:String = "normal";
+		private var strong:String = "strong";
+		private var heavy:String = "heavy";
 		
 		public function towerBehaviour(iX:int, iY:int):void 
 		{
@@ -40,7 +48,7 @@ package game.tower
 		private function update(e:Event):void 
 		{
 			if(!Game.paused){
-			var grid:Array = TileGrid.tileGrid;
+			var grid:Array = Grid.tileGrid;
 			enemy = Game.enemyArray;
 			
 			this.rotation = 0;
@@ -57,6 +65,10 @@ package game.tower
 				//trace("dif: "+dif);
 				if (diff < 150) {
 						this.rotation = dif.angle * 180 / Math.PI;
+						counter ++;
+						if (counter >= coolDown) {
+							shoot(bullet);
+						}
 				}else {
 				//	this.rotation = 0;
 				}
@@ -64,6 +76,19 @@ package game.tower
 				
 			}
 			}else {
+				
+			}
+		}
+		
+		private function shoot(bulletType:String):void 
+		{
+			if (bulletType == weak) {
+				
+			} else if (bulletType == normal) {
+				
+			} else if (bulletType == strong) {
+				
+			} else if (bulletType == heavy) {
 				
 			}
 		}
@@ -95,6 +120,16 @@ package game.tower
 		public function set coolDown(coolDown:Number):void 
 		{
 			_coolDown = coolDown;
+		}
+		
+		public function get bullet():String 
+		{
+			return _bullet;
+		}
+		
+		public function set bullet(bullet:String):void 
+		{
+			_bullet = bullet;
 		}
 		
 	}

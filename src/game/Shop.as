@@ -5,6 +5,7 @@ package game
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import game.tower.Tower;
+	import game.grid.Grid;
 	import game.tower.TowerFactory;
 	/**
 	 * ...
@@ -69,7 +70,7 @@ package game
 		private function onClick(e:MouseEvent):void 
 		{
 			
-			var grid:Array = TileGrid.tileGrid;
+			var grid:Array = Grid.tileGrid;
 			if (grid[iY][iX] <= -1) {
 				if (towerBuildArray[0]) {
 					grid[iY][iX] = 0;

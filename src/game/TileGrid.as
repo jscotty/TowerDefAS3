@@ -3,73 +3,15 @@ package game
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import game.grid.Grid;
 	/**
 	 * ...
 	 * @author justin Bieshaar
 	 */
 	public class TileGrid extends Sprite
 	{
-		public static var tileGrid:Array = [  //0 wall, 1 straight grid, 2 down grid, 3 corner, 4 corner, 5 corner, 6 corner, 4 blue grid straight, 5 blue grid down 
-							/*1*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*2*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*3*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, -6, -1, -1, -1, -1, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*4*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, -1, -1, -1, -1, -1, -3,  0,  0,  0,  0,  0, -2, 12,  7,  7,  9,-34, -1, -1, -1, -3,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*5*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12,  7,  7,  7,  9, -2,  0,  0,  0,  0,  0, -2,  8, -6, -3,  8, -2, 12,  7,  9, -2,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*6*/	[1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  3,  0,  8, -6, -1, -3,  8, -2,  0,  0,  0, -6, -1, -5,  8, -2, -2,  8, -7,  8, -8,  8, -2,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*7*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  0,  8, -2,  0, -2,  8,  0,  0,  0,  0, -2, 12,  7, 11, -2, -2, 10,  7, 11, -2,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*8*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 19,  7, 11, -2,  0, -2,  8,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,  0,  0,  0, -2,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*9*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  0,  0, -5,  0,  0,  8,  0,  0,  0,  0,  0,  8,  0, -6, -1, -1, -1, -3,  0,  0,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*10*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,  0,  8,  0, -2, 12,  7,  9, -4, -3,  0,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-							/*11*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4, 20,  1,  1, 24,  1, 25,  1,  1,  1,  3,  0,  8,  0,  0,  8,  0, 10,  3,  0,  0,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-							/*12*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  0,  0,  8,  0,  0,  0,  0,  0, 19,  1, 11,  0,  0,  8,  0,  0,  8,  0,  6, 25,  1, 20,  1,  1, 24,  1,  1,  1, 99],  
-							/*13*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  0,  0,  8,  0,  0,  0,  0,  0,  2,  0,  0,  0,  0,  8,  0,  0,  8,  0,  2,  0,  0,  8,  0,  0,  8,  0,  0,  0,  0], 
-							/*14*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12,  7,  7, 11,  0,  0,  8,  0,  0,  0,  0,  0,  4, 20,  1,  1,  1, 21, 24,  1, 25,  1,  5,  0,  0,  8,  0,  0,  8,  0,  0,  0,  0], 
-							/*15*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-12,  8,-16,  0,  0,  0,-12,  8,-12,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,  8,  0,  0,  0,  0, 12,  7, 11,  0,  0,  8,  0,  0,  0,  0], 
-							/*16*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-12,  8,-14,-11,-11,-11,-38,  8,-12,  0,  0,  0,  0,  0,  8,  0,  0,  0,  0,  8,  0,  0,  0,  0,  8,-16,-11,-38, 12, 11,  0,  0,  0,  0],  
-							/*17*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-12, 10,  7,  7,  7,  9,-12,  8,-12,  0,  0, 12,  7,  7, 11,  0,  0,  0,  0,  8,  0,  0,  0,  0,  8,-14,-11,-15,  8,-16,-15,  0,  0,  0],  
-							/*18*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-14,-11,-11,-11,-13,  8,-12,  8,-12,  0,  0,  8,-16,-11,-11,  0,  0,  0,  0, 10,  7,  9,  0,  0, 10,  7,  7,  7, 11,-12,  0,  0,  0,  0],  
-							/*19*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-12, 10,  7, 11,-12,  0,-12,  8,-12,  0,  0,  0,  0,  0,-16,-11,-20,  8,  0,  0,-11,-11,-11,-11,-11,-15,  0,  0,  0,  0], 
-							/*20*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-14,-11,-11,-11,-15,  0,-12,  8,-12,  0,  0,  0,  0,  0,-12, 12,  7, 11,-12,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-							/*21*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-12,  8,-14,-11,-11,-13,  0,  0,-12,  8,-16,-11,-15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-							/*22*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-12, 10,  7,  7,  9,-12,  0,  0,-12,  8,-12,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-							/*23*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-14,-11,-11,-13,  8,-14,-11,-11,-15,  8,-12,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-							/*24*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-12, 10,  7,  7,  7,  7, 11,-12,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],  
-							/*25*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,-14,-11,-11,-11,-11,-11,-11,-15,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*26*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*27*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], 
-							/*28*/	[0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
-																																				];
-																											
-		public static var tileTexture:Array = [ //0 wall,  1 straight grid,  2 down grid,  3 corner,  4 corner,  5 corner,  6 corner 
-							/*1*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*2*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*3*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*4*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*5*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 7, 3, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 8, 0, 6, 7, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*6*/	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 8, 0, 8, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*7*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 6, 7, 5, 0, 0, 4, 7, 5, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*8*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 7, 5, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*9*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*10*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 6, 1, 3, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							/*11*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,20, 1, 1,24, 1,25, 1, 1, 1, 3, 0, 8, 0, 0, 2, 0, 4, 3, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							/*12*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 8, 0, 0, 0, 0, 0,19, 1, 5, 0, 0, 2, 0, 0, 2, 0, 6,25, 1,20, 1, 1,24, 1, 1, 1,99], 
-							/*13*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 8, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 0, 2, 0, 0, 8, 0, 0, 8, 0, 0, 0, 0],
-							/*14*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 5, 0, 0, 8, 0, 0, 0, 0, 0, 4,20, 1, 1, 1,21,24, 1,25, 1, 5, 0, 0, 8, 0, 0, 8, 0, 0, 0, 0],
-							/*15*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 6, 7, 5, 0, 0, 8, 0, 0, 0, 0],
-							/*16*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 6, 5, 0, 0, 0, 0], 
-							/*17*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 7, 7, 7, 3, 0, 8, 0, 0, 0, 6, 7, 7, 5, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0], 
-							/*18*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 4, 7, 3, 0, 0, 4, 7, 7, 7, 5, 0, 0, 0, 0, 0], 
-							/*19*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 7, 5, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*20*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 6, 7, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							/*21*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							/*22*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 7, 7, 3, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							/*23*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							/*24*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 7, 7, 7, 7, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							/*25*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*26*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*27*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							/*28*/	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-																																				];
+		private var tileGrid:Array = [];
+		private var tileTexture:Array = Grid.tileTexture;
 		
 		private var row:int;
 		private var col:int;
@@ -81,6 +23,8 @@ package game
 		private var _gridBlueCorner:GridKwabBCorner;
 		private var _gridRed:GridKwabR;
 		private var _gridRedCorner:GridKwabRCorner;
+		private var _gridRedEnd:GridKwabREnd;
+		private var _gridBlueEnd:GridKwabBEnd;
 		
 		private var cellWidth:Number;
 		private var cellHeight:Number;
@@ -88,15 +32,25 @@ package game
 		private var numRows:Number = 28;
 		
 		private var newTile;
+		private var _gridRed3Corn:GridKwabR3Way;
+		private var _gridBlue3Corn:GridKwabB3Way;
 		
-		public function createGrid(cellWidth:Number, cellHeight:Number):void 
+		private var game:String = "game";
+		private var creator:String = "creator";
+		
+		public function createGrid(cellWidth:Number, cellHeight:Number, mode:String):void 
 		{
+			if(mode == game){
+				tileGrid = Grid.tileGrid;
+				tileTexture = Grid.tileTexture;
+			}
+			
 			this.cellWidth = cellWidth;
 			this.cellHeight = cellHeight;
 			 for (row = 0; row < numRows; row++){
 				for (col = 0; col < numColumns; col++){
 					if (tileGrid[row][col] == 0){
-						// coming
+						// nothing
 					} else if (tileGrid[row][col] == 1 || tileGrid[row][col] == 99 || tileGrid[row][col] == 7) {
 							grid0(0);
 					} else if (tileGrid[row][col] == 2 || tileGrid[row][col] == 8) {
@@ -110,79 +64,77 @@ package game
 					} else if (tileGrid[row][col] == 6 || tileGrid[row][col] == 12) {
 							grid3(0);
 					} else if (tileGrid[row][col] == -1) {
-							gridBlue(0);
+							gridRed(0);
 					} else if (tileGrid[row][col] == -2) {
-							gridBlue(90);
+							gridRed(90);
 					} else if (tileGrid[row][col] == -3) {
-							gridBlueCorner(90);
-					} else if (tileGrid[row][col] == -4) {
-							gridBlueCorner(270);
-					} else if (tileGrid[row][col] == -5) {
-							gridBlueCorner(180);
-					} else if (tileGrid[row][col] == -6) {
-							gridBlueCorner(0);
-					} else if (tileGrid[row][col] == -7) {
-							gridBlue(90);
-					} else if (tileGrid[row][col] == -8) {
-							gridBlue(90);
-					} else if (tileGrid[row][col] == -9) {
-							gridBlue(0);
-					} else if (tileGrid[row][col] == -10) {
-							gridBlue(0);
-					} else if (tileGrid[row][col] == -11) {
-							gridRed(0);
-					} else if (tileGrid[row][col] == -12) {
-							gridRed(90);
-					} else if (tileGrid[row][col] == -13) {
 							gridRedCorner(90);
-					} else if (tileGrid[row][col] == -14) {
+					} else if (tileGrid[row][col] == -4) {
 							gridRedCorner(270);
-					} else if (tileGrid[row][col] == -15) {
+					} else if (tileGrid[row][col] == -5) {
 							gridRedCorner(180);
-					} else if (tileGrid[row][col] == -16) {
+					} else if (tileGrid[row][col] == -6) {
 							gridRedCorner(0);
+					} else if (tileGrid[row][col] == -7) {
+							gridRedEnd(0);
+					} else if (tileGrid[row][col] == -8) {
+							gridRedEnd(270);
+					} else if (tileGrid[row][col] == -9) {
+							gridRedEnd(90);
+					} else if (tileGrid[row][col] == -10) {
+							gridRedEnd(180);
+					} else if (tileGrid[row][col] == -11) {
+							gridBlue(0);
+					} else if (tileGrid[row][col] == -12) {
+							gridBlue(90);
+					} else if (tileGrid[row][col] == -13) {
+							gridBlueCorner(90);
+					} else if (tileGrid[row][col] == -14) {
+							gridBlueCorner(270);
+					} else if (tileGrid[row][col] == -15) {
+							gridBlueCorner(180);
+					} else if (tileGrid[row][col] == -16) {
+							gridBlueCorner(0);
 					} else if (tileGrid[row][col] == -17) {
-							gridRed(90);
+							gridBlueEnd(0);
 					} else if (tileGrid[row][col] == -18) {
-							gridRed(90);
+							gridBlueEnd(270);
 					} else if (tileGrid[row][col] == -19) {
-							gridRed(0);
+							gridBlueEnd(90);
 					} else if (tileGrid[row][col] == -20) {
-							gridRed(0);
+							gridBlueEnd(180);
 					} else if (tileGrid[row][col] == -30) {
-							gridBlue(90);
+							gridRed3Corn(180);
 					} else if (tileGrid[row][col] == -31) {
-							gridBlue(90);
+							gridRed3Corn(0);
 					} else if (tileGrid[row][col] == -32) {
-							gridBlue(0);
+							gridRed3Corn(270);
 					} else if (tileGrid[row][col] == -33) {
-							gridBlue(0);
-					} else if (tileGrid[row][col] == -34) {
-							gridBlue(0);
+							gridRed3Corn(90);
 					} else if (tileGrid[row][col] == -36) {
-							gridRed(90);
+							gridBlue3Corn(180);
 					} else if (tileGrid[row][col] == -37) {
-							gridRed(90);
+							gridBlue3Corn(0);
 					} else if (tileGrid[row][col] == -38) {
-							gridRed(0);
+							gridBlue3Corn(270);
 					} else if (tileGrid[row][col] == -39) {
-							gridRed(0);
+							gridBlue3Corn(90);
 					} else if (tileGrid[row][col] == 18) {
-						grid3Corn(270);
+						grid3Corn(270, true);
 					}  else if (tileGrid[row][col] == 19) {
-						grid3Corn(90);
+						grid3Corn(90, true);
 					} else if (tileGrid[row][col] == 20) {
-						grid3Corn(180);
+						grid3Corn(180, true);
 					} else if (tileGrid[row][col] == 21) {
-						grid3Corn(0);
+						grid3Corn(0, true);
 					} 	else if (tileGrid[row][col] == 22) {
-							grid3Corn(270)
+							grid3Corn(270, false)
 						} else if (tileGrid[row][col] == 23) {
-							grid3Corn(90);
+							grid3Corn(90, false);
 						} else if (tileGrid[row][col] == 24) {
-							grid3Corn(180);
+							grid3Corn(180, false);
 						} else if (tileGrid[row][col] == 25) {
-							grid3Corn(0);
+							grid3Corn(0, false);
 						}
 				
 				}
@@ -215,7 +167,7 @@ package game
 			_grid3.rotation = rot;
 		}
 		
-		public function grid3Corn(rot:int):void 
+		public function grid3Corn(rot:int, rotatable:Boolean):void 
 		{
 			_grid3Corn = new Grid3Corn();
 			tileTexture[row][col] = _grid3Corn;
@@ -226,6 +178,11 @@ package game
 			_grid3Corn.height = cellHeight;
 			
 			_grid3Corn.rotation = rot;
+			if (rotatable) {
+				gridX(row, col);
+			} else {
+				
+			}
 		}
 		
 		public function gridBlue(rot:int):void 
@@ -239,6 +196,32 @@ package game
 			_gridBlue.height = cellHeight;
 			
 			_gridBlue.rotation = rot;
+		}
+		
+		public function gridBlue3Corn(rot:int):void 
+		{
+			_gridBlue3Corn = new GridKwabB3Way();
+			tileTexture[row][col] = _gridBlue3Corn;
+			addChild(_gridBlue3Corn);
+			_gridBlue3Corn.x = col * cellWidth  + 34;
+			_gridBlue3Corn.y = row * cellHeight + 34;
+			_gridBlue3Corn.width = cellWidth;
+			_gridBlue3Corn.height = cellHeight;
+			
+			_gridBlue3Corn.rotation = rot;
+		}
+		
+		public function gridBlueEnd(rot:int):void 
+		{
+			_gridBlueEnd = new GridKwabBEnd();
+			tileTexture[row][col] = _gridBlueEnd;
+			addChild(_gridBlueEnd);
+			_gridBlueEnd.x = col * cellWidth  + 34;
+			_gridBlueEnd.y = row * cellHeight + 34;
+			_gridBlueEnd.width = cellWidth;
+			_gridBlueEnd.height = cellHeight;
+			
+			_gridBlueEnd.rotation = rot;
 		}
 		
 		public function gridBlueCorner(rot:int):void 
@@ -267,6 +250,32 @@ package game
 			_gridRed.rotation = rot;
 		}
 		
+		public function gridRedEnd(rot:int):void 
+		{
+			_gridRedEnd = new GridKwabREnd();
+			tileTexture[row][col] = _gridRedEnd;
+			addChild(_gridRedEnd);
+			_gridRedEnd.x = col * cellWidth  + 34;
+			_gridRedEnd.y = row * cellHeight + 34;
+			_gridRedEnd.width = cellWidth;
+			_gridRedEnd.height = cellHeight;
+			
+			_gridRedEnd.rotation = rot;
+		}
+		
+		public function gridRed3Corn(rot:int):void 
+		{
+			_gridRed3Corn = new GridKwabR3Way();
+			tileTexture[row][col] = _gridRed3Corn;
+			addChild(_gridRed3Corn);
+			_gridRed3Corn.x = col * cellWidth  + 34;
+			_gridRed3Corn.y = row * cellHeight + 34;
+			_gridRed3Corn.width = cellWidth;
+			_gridRed3Corn.height = cellHeight;
+			
+			_gridRed3Corn.rotation = rot;
+		}
+		
 		public function gridRedCorner(rot:int):void 
 		{
 			_gridRedCorner = new GridKwabRCorner();
@@ -280,7 +289,7 @@ package game
 			_gridRedCorner.rotation = rot;
 		}
 		
-		public function changeTileCorner(rot:int, rowNr:int, colNr:int):void 
+		public function changeTileCorner(rot:int, rowNr:int, colNr:int, rotatable:Boolean):void 
 		{
 			removeChild(tileTexture[rowNr][colNr]);
 			newTile = new Grid3();
@@ -293,8 +302,13 @@ package game
 			
 			newTile.rotation = rot;
 			
+			if (rotatable) {
+				gridX(rowNr, colNr);
+			} else {
+				
+			}
 		}
-		public function changeTile(rot:int, rowNr:int, colNr:int):void 
+		public function changeTile(rot:int, rowNr:int, colNr:int, rotatable:Boolean):void 
 		{
 			removeChild(tileTexture[rowNr][colNr]);
 			newTile = new Grid3Corn();
@@ -307,8 +321,14 @@ package game
 			
 			newTile.rotation = rot;
 			
+			if (rotatable) {
+				gridX(rowNr, colNr);
+			} else {
+				
+			}
+			
 		}
-		public function changeTileMultie(rowNr:int, colNr:int):void 
+		public function changeTileMultie(rowNr:int, colNr:int, rotatable:Boolean):void 
 		{
 			removeChild(tileTexture[rowNr][colNr]);
 			newTile = new GridCorners();
@@ -318,6 +338,23 @@ package game
 			newTile.y = rowNr * cellHeight + 34;
 			newTile.width = cellWidth;
 			newTile.height = cellHeight;
+			
+			if (rotatable) {
+				gridX(rowNr, colNr);
+			} else {
+				
+			}
+		}
+		
+		private function gridX(rowNr:int, colNr:int):void 
+		{
+			_gridX = new GridX();
+			addChild(_gridX);
+			
+			_gridX.x = colNr * cellWidth  + 34;
+			_gridX.y = rowNr * cellHeight + 34;
+			_gridX.width = cellWidth;
+			_gridX.height = cellHeight;
 		}
 	}
 

@@ -13,6 +13,10 @@ package game.tower.towerType
 		{
 			tower = new Tower1();
 			addChild(tower);
+			
+			coolDown = 20;
+			damage = 0.02;
+			bullet = "weak";
 		}
 		
 	}

@@ -5,6 +5,7 @@ package game.enemy
 	import game.Game;
 	import game.Shop;
 	import game.TileGrid;
+	import game.grid.Grid;
 	import utils.Vector2D;
 	/**
 	 * ...
@@ -36,7 +37,7 @@ package game.enemy
 		{
 			if(Game.paused == false){
 				var indexX:Number = Math.floor((this.x - posX) / 64), indexY:Number = Math.floor((this.y - posY)/ 64);
-				var tilegrid:Array = TileGrid.tileGrid;
+				var tilegrid:Array = Grid.tileGrid;
 				
 				//dir 1 is X direction
 				this.x += direction[0] * speed;

@@ -16,6 +16,7 @@ package game
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	import flash.filters.BitmapFilterQuality;
+	import game.grid.Grid;
 	
 	/**
 	 * ...
@@ -45,6 +46,13 @@ package game
 		private var backgroundSfx:String = "looptrack.mp3";
 		private var shootSfx:String = "shoot.mp3";
 		
+		private var weak:String = "weak";
+		private var normal:String = "normal";
+		private var strong:String = "strong";
+		private var heavy:String = "heavy";
+		
+		private var mode:String = "";
+		
 		private var heart:Heart;
 		private var scope:Microscope;
 		
@@ -58,6 +66,10 @@ package game
 		public static var difY:Number = 0;
 		
 		private var soundSystem:SoundSystem;
+		private var waveSystem:WaveSystem;
+		private var particleSystem:ParticleSystem;
+		private var preLoader:PreLoader;
+		private var doneLoading:String = "LoadDone";
 		
 		public function Game(s:Stage) 
 		{
@@ -67,14 +79,17 @@ package game
 			//soundSystem.playMusic(0, 1, true);
 			//soundSystem.playMusic(1, 1, true);
 			
+			waveSystem = new WaveSystem();
+			addChild(waveSystem);
+			
 			bg = new BG();
-			bg.x = 0 + 320;
+			bg.x = 0 + 300;
 			bg.y = 0;
-			addChild(bg);
+			addChildAt(bg, 0);
 			
 			tileGrid = new TileGrid();
-			addChild(tileGrid);
-			tileGrid.createGrid(64, 64);
+			addChildAt(tileGrid, 1);
+			tileGrid.createGrid(64, 64, mode);
 			
 				spawnEnemy();
 			
@@ -86,7 +101,7 @@ package game
 			
 			heart = new Heart();
 			heart.x = 2690;
-			addChildAt(heart, 2);
+			addChildAt(heart, 5);
 			
 			towerFactory = new TowerFactory;
 			
@@ -108,6 +123,19 @@ package game
 			cam = new Cam(0x000000, 1,s);
 			addChildAt(cam, 3);
 			
+			preLoader = new PreLoader(s);
+			addChild(preLoader);
+			preLoader.addEventListener(doneLoading, loadingDone);
+			
+			particleSystem = new ParticleSystem;
+			addChildAt(particleSystem, 6);
+			particleSystem.startParticle(normal, 1);
+		}
+		
+		private function loadingDone(e:Event):void 
+		{
+			removeChild(preLoader);
+			preLoader = null;
 		}
 		
 		private function spawnEnemy():void 
@@ -116,8 +144,8 @@ package game
 				enemyFactory = new EnemyFactory();
 				_enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
 				enemyArray.push(_enemy);
-				addChildAt(_enemy,2);
-				_enemy.x = (34 * 6 - 34) * i + 100 - 320;
+				addChildAt(_enemy,3);
+				_enemy.x = (34 * 6 - 34) * i + 100 + 320;
 				_enemy.y = 64 * 6 - 34;
 				_enemy.enemyBehaviour();
 				
@@ -140,7 +168,7 @@ package game
 		{
 			tower = towerFactory.createTower(TowerFactory.NORMAL_TOWER);
 			towerArray.push(tower);
-			addChildAt(tower, 2);
+			addChildAt(tower, 10);
 			tower.x = indexX * 64 + 34;
 			tower.y = indexY * 64 + 34;
 			
@@ -179,6 +207,9 @@ package game
 			shop.x = cam.x;
 			shop.y = cam.y;
 			
+			particleSystem.x = enemyArray[1].x - 590;
+			particleSystem.y = enemyArray[1].y - 360;
+			
 			indexX = Math.floor(mouseX / 64);
 			indexY = Math.floor(mouseY / 64);
 			
@@ -195,8 +226,8 @@ package game
 		private function onClick(e:MouseEvent):void 
 		{
 			if(!paused){
-				var grid:Array = TileGrid.tileGrid;
-				var gridTex:Array = TileGrid.tileTexture;
+				var grid:Array = Grid.tileGrid;
+				var gridTex:Array = Grid.tileTexture;
 				
 				/*
 				 * tile 19 = - recht
@@ -214,61 +245,61 @@ package game
 				if (grid[indexY][indexX] == 18) {
 					if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
 						grid[indexY][indexX] = 29;
-						tileGrid.changeTileMultie(indexY, indexX);
+						tileGrid.changeTileMultie(indexY, indexX, true);
 					} else if (grid[indexY][indexX + 1] > 0 && grid[indexY][indexX - 1] <= 0) {
 						grid[indexY][indexX] = 27;
-						tileGrid.changeTileCorner(270, indexY, indexX);
+						tileGrid.changeTileCorner(270, indexY, indexX, true);
 					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] <= 0) {
 						grid[indexY][indexX] = 28;
-						tileGrid.changeTileCorner(180, indexY, indexX);
+						tileGrid.changeTileCorner(180, indexY, indexX, true);
 					}  else {
 					}
 				} else if (grid[indexY][indexX] == 19) {
 					if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
 						grid[indexY][indexX] = 29;
-						tileGrid.changeTileMultie(indexY, indexX);
+						tileGrid.changeTileMultie(indexY, indexX, true);
 					} else if (grid[indexY][indexX + 1] > 0 && grid[indexY][indexX - 1] <= 0) {
 						grid[indexY][indexX] = 27;
-						tileGrid.changeTileCorner(270, indexY, indexX);
+						tileGrid.changeTileCorner(270, indexY, indexX, true);
 					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] <= 0) {
 						grid[indexY][indexX] = 28;
-						tileGrid.changeTileCorner(180, indexY, indexX);
+						tileGrid.changeTileCorner(180, indexY, indexX, true);
 					}  else {
 					}
 				} else if (grid[indexY][indexX] == 20) {
 					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
 						grid[indexY][indexX] = 25;
-						tileGrid.changeTileMultie(indexY, indexX);
+						tileGrid.changeTileMultie(indexY, indexX, true);
 					} else if (grid[indexY + 1][indexX] > 0 && grid[indexY - 1][indexX] <= 0) {
 						grid[indexY][indexX] = 26;
-						tileGrid.changeTileCorner(90, indexY, indexX);
+						tileGrid.changeTileCorner(90, indexY, indexX, true);
 					} else if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] <= 0) {
 						grid[indexY][indexX] = 28;
-						tileGrid.changeTileCorner(180, indexY, indexX);
+						tileGrid.changeTileCorner(180, indexY, indexX, true);
 					}  else {
 					}
 				} else if (grid[indexY][indexX] == 21) {
 					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0) {
 						grid[indexY][indexX] = 19;
-						tileGrid.changeTile(90, indexY, indexX);
+						tileGrid.changeTile(90, indexY, indexX, true);
 					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0) {
 						grid[indexY][indexX] = 20;
-						tileGrid.changeTile(0, indexY, indexX);
+						tileGrid.changeTile(0, indexY, indexX, true);
 					} else {
 					}
 				} else if (grid[indexY][indexX] == 26 || grid[indexY][indexX] == 27 || grid[indexY][indexX] == 28 || grid[indexY][indexX] == 29) {
 					if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0 && grid[indexY][indexX + 1] > 0) {
 						grid[indexY][indexX] = 19;
-						tileGrid.changeTile(90, indexY, indexX);
+						tileGrid.changeTile(90, indexY, indexX, true);
 					} else if (grid[indexY - 1][indexX] > 0 && grid[indexY + 1][indexX] > 0 && grid[indexY][indexX - 1] > 0) {
 						grid[indexY][indexX] = 18;
-						tileGrid.changeTile(270, indexY, indexX);
+						tileGrid.changeTile(270, indexY, indexX, true);
 					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0 && grid[indexY - 1][indexX] > 0) {
 						grid[indexY][indexX] = 21;
-						tileGrid.changeTile(0, indexY, indexX);
+						tileGrid.changeTile(0, indexY, indexX, true);
 					} else if (grid[indexY][indexX - 1] > 0 && grid[indexY][indexX + 1] > 0 && grid[indexY + 1][indexX] > 0) {
 						grid[indexY][indexX] = 20;
-						tileGrid.changeTile(180, indexY, indexX);
+						tileGrid.changeTile(180, indexY, indexX, true);
 					} else {
 					}
 				} else {

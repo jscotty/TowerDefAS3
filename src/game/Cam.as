@@ -161,7 +161,7 @@ package game
 				if (this.x <= -10) {
 					keypressed = true;
 					this.x += 10;
-				}else if (this.x >= 2275) {
+				}else if (this.x >= 2575) {
 					keypressed = true;
 					this.x -= 10;
 				}else if (this.y <= -1) {
