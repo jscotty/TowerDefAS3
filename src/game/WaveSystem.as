@@ -10,8 +10,9 @@ package game
 	public class WaveSystem extends Sprite 
 	{
 		private var count:int = 0;
-		private var time:int = 0;
-		private var wave:int = 1;
+		public var time:int = 3;
+		public var wave:int = 0;
+		public var startWave:String = "wave";
 		
 		public function WaveSystem() 
 		{
@@ -20,11 +21,20 @@ package game
 		
 		private function update(e:Event):void 
 		{
-			count += 1;
-			
-			if (count >= 24) {
-				time += 1;
-				count = 0;
+			var enemy:Array = Game.enemyArray;
+			//trace(enemy.length);
+			if (enemy.length <= 4) {
+				count ++;
+				if (count >= 24) {
+					time --;
+					count = 0;
+					//trace(time);
+				}
+				if (time <= 0) {
+					time = 16;
+					wave ++;
+					dispatchEvent(new Event(startWave));
+				}
 			}
 		}
 		

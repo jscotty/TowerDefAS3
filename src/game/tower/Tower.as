@@ -36,6 +36,7 @@ package game.tower
 		private var normal:String = "normal";
 		private var strong:String = "strong";
 		private var heavy:String = "heavy";
+		public var anim:Number;
 		
 		public function towerBehaviour(iX:int, iY:int):void 
 		{
@@ -66,8 +67,12 @@ package game.tower
 				if (diff < 150) {
 						this.rotation = dif.angle * 180 / Math.PI;
 						counter ++;
+						anim = 0;
 						if (counter >= coolDown) {
 							shoot(bullet);
+							trace("shoot!");
+							counter = 0;
+							anim = 1;
 						}
 				}else {
 				//	this.rotation = 0;

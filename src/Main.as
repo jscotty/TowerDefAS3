@@ -56,11 +56,11 @@ package
 			removeChild(_mainMenu);
 			_mainMenu = null;
 			
-			/*_game = new Game(stage);
-			addChildAt(_game, 0);*/
+			_game = new Game(stage);
+			addChildAt(_game, 0);
 			
-			_creator = new LevelCreator(stage);
-			addChildAt(_creator, 0);
+			/*_creator = new LevelCreator(stage);
+			addChildAt(_creator, 0);*/
 		}
 		
 	}

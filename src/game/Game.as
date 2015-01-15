@@ -69,16 +69,20 @@ package game
 		private var preLoader:PreLoader;
 		private var doneLoading:String = "LoadDone";
 		
+		private var wavecount:int = 0;
+		private var uid:UID;
+		
 		public function Game(s:Stage) 
 		{
 			soundSystem = new SoundSystem();
 			soundSystem.addMusic(backgroundSfx);
 			soundSystem.addMusic(shootSfx);
-			//soundSystem.playMusic(0, 1, true);
+			soundSystem.playMusic(0, 1, true);
 			//soundSystem.playMusic(1, 1, true);
 			
 			waveSystem = new WaveSystem();
 			addChild(waveSystem);
+			waveSystem.addEventListener(waveSystem.startWave, startWave);
 			
 			bg = new BG();
 			bg.x = 0 + 300;
@@ -94,7 +98,7 @@ package game
 			
 			heart = new Heart();
 			heart.x = 2690;
-			addChildAt(heart, 5);
+			addChildAt(heart, 2);
 			
 			towerFactory = new TowerFactory;
 			
@@ -114,20 +118,48 @@ package game
 			shop.addEventListener(buildTurret, spawnTurret);
 			
 			cam = new Cam(0x000000, 1,s);
-			addChildAt(cam, 3);
+			addChildAt(cam, 1);
 			
 			preLoader = new PreLoader(s);
 			addChild(preLoader);
 			preLoader.addEventListener(doneLoading, loadingDone);
 			
-			particleSystem = new ParticleSystem;
-			addChildAt(particleSystem, 6);
-			particleSystem.startParticle(normal, 1);
+			uid = new UID();
+			addChild(uid);
 			
 			s.addEventListener(Event.ENTER_FRAME, camera);
 			
 			addEventListener(Event.ENTER_FRAME, update);
 			addEventListener(MouseEvent.CLICK, onClick);
+		}
+		
+		private function startWave(e:Event):void 
+		{
+			var enemycount:int = Math.floor(waveSystem.wave * 9 / 3);
+			for (var i:int = 0; i < enemycount; i++ ) {
+				wavecount++;
+				enemyFactory = new EnemyFactory();
+				//trace(wavecount);
+				if (wavecount <= 6) {
+					_enemy = enemyFactory.createEnemy(EnemyFactory.EASY_ENEMY);
+					//trace("easyenemy");
+				}
+				else if(wavecount <= 11) _enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
+				else if(wavecount <= 19) _enemy = enemyFactory.createEnemy(EnemyFactory.STRONG_ENEMY);
+				else if(wavecount <= 28) _enemy = enemyFactory.createEnemy(EnemyFactory.EBOLA_ENEMY);
+				else if(wavecount <= 60) _enemy = enemyFactory.createEnemy(EnemyFactory.HEAVY_ENEMY);
+				enemyArray.push(_enemy);
+				addChildAt(_enemy,4);
+				_enemy.x = (34 * 4 - 34) * i * -2 - 100;
+				_enemy.y = 64 * 6 - 34;
+				_enemy.enemyBehaviour();
+				//trace(_enemy.x);
+				
+				_enemy.addEventListener(death, enemyDeath);
+			}
+				if (wavecount == enemycount) wavecount = 0;
+				else;
+				trace(wavecount);
 		}
 		
 		private function loadingDone(e:Event):void 
@@ -138,17 +170,7 @@ package game
 		
 		private function spawnEnemy():void 
 		{
-			for (var i:int = 0; i < 2; i++ ) {
-				enemyFactory = new EnemyFactory();
-				_enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
-				enemyArray.push(_enemy);
-				addChildAt(_enemy,3);
-				_enemy.x = (34 * 6 - 34) * i + 100 + 320;
-				_enemy.y = 64 * 6 - 34;
-				_enemy.enemyBehaviour();
-				
-				_enemy.addEventListener(death, enemyDeath);
-			}
+			
 		}
 		
 		private function enemyDeath(e:Event):void 
@@ -160,13 +182,15 @@ package game
 					enemyArray.splice(i, 1);
 				}
 			}
+			
+			uid.lifes -= 1;
 		}
 		
 		private function spawnTurret(e:Event):void 
 		{
 			tower = towerFactory.createTower(TowerFactory.NORMAL_TOWER);
 			towerArray.push(tower);
-			addChildAt(tower, 10);
+			addChildAt(tower, 4);
 			tower.x = indexX * 64 + 34;
 			tower.y = indexY * 64 + 34;
 			
@@ -205,8 +229,10 @@ package game
 			shop.x = cam.x;
 			shop.y = cam.y;
 			
-			particleSystem.x = enemyArray[1].x - 590;
-			particleSystem.y = enemyArray[1].y - 360;
+			uid.x = cam.x;
+			uid.y = cam.y;
+			
+			uid.time = waveSystem.time;
 			
 			indexX = Math.floor(mouseX / 64);
 			indexY = Math.floor(mouseY / 64);
@@ -214,6 +240,10 @@ package game
 			/*var difbla:int = -70;
 			if (difbla < 0) {
 				//trace("bruh");
+			}*/
+			
+			/*for (var i:int = 0; i < enemyArray.length; i++ ) {
+				trace(enemyArray[i].x);
 			}*/
 			}else {
 				

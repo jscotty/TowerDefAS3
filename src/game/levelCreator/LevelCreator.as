@@ -18,6 +18,9 @@ package game.levelCreator
 		private var indexY:Number;
 		private var shop:TileShop;
 		
+		private var test:int = 0;
+		private var testt:int = 0;
+		
 		public function LevelCreator(s:Stage) 
 		{
 			tilegrid = new TileGrid();
@@ -32,10 +35,19 @@ package game.levelCreator
 			
 			addEventListener(Event.ENTER_FRAME, update);
 			s.addEventListener(Event.ENTER_FRAME, camera);
+			
+			
 		}
 		
 		private function update(e:Event):void 
 		{
+			testt++;
+			if (testt >= 12) {
+				test++;
+				testt = 0;
+			}
+			var enemycount:int = Math.floor(test * 10 / 3.2);
+			trace(enemycount);
 			shop.x = cam.x;
 			shop.y = cam.y;
 			

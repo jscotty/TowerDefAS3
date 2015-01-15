@@ -25,6 +25,7 @@ package game.enemy
 		private var posY:Number = 30;
 		
 		private var count:int = 1;
+		private var deathcount:int = 0;
 		public var died:Boolean = false;
 		
 		public function enemyBehaviour():void
@@ -44,13 +45,20 @@ package game.enemy
 				
 				//dir 2 is Y direction
 				this.y += direction[1] * speed;
+				if (indexY <= 1) {
+					indexY = 1;
+				}else {
+					
+				}
+				//trace("indexX (", indexX,") indexY(",indexY,")");
+					var myTile:Number = tilegrid[indexY][indexX];
+					var nexTile:Number = tilegrid[indexY + direction[1]][indexX + direction[0]];
+					var up:Number = tilegrid[indexY - 1][indexX];
+					var down:Number = tilegrid[indexY + 1][indexX];
+					var right:Number = tilegrid[indexY][indexX + 1];
+					var left:Number = tilegrid[indexY][indexX - 1];
 				
-				var myTile:Number = tilegrid[indexY][indexX];
-				var nexTile:Number = tilegrid[indexY + direction[1]][indexX + direction[0]];
-				var up:Number = tilegrid[indexY - 1][indexX];
-				var down:Number = tilegrid[indexY + 1][indexX];
-				var right:Number = tilegrid[indexY][indexX + 1];
-				var left:Number = tilegrid[indexY][indexX - 1];
+					
 				
 				//trace("mytile: " + myTile + " >NEXTILE<:" + nexTile + " up:" + up + " down:" + down + " right:" + right + " left:" + left);
 				
@@ -190,13 +198,13 @@ package game.enemy
 				if (health <= 0) {
 					scaleX -= 0.1;
 					scaleY -= 0.1;
-					dispatchEvent(new Event(death));
 					
 					count ++;
-					trace(count);
+					//trace(count);
 					if (count >= 10) {
 						died = true;
 						removeEventListener(Event.ENTER_FRAME, update);
+						dispatchEvent(new Event(death));
 					}
 				}
 			} else {
