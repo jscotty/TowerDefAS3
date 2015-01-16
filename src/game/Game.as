@@ -10,6 +10,7 @@ package game
 	import game.enemy.EnemyFactory;
 	import game.tower.Tower;
 	import game.tower.TowerFactory;
+	import menu.HowToPlayMenu;
 	import menu.PauseMenu;
 	import utils.Vector2D;
 	import flash.events.Event;
@@ -39,7 +40,7 @@ package game
 		
 		public static var pauseButton:PauseButton;
 		private var pauseMenu:PauseMenu;
-		public static var paused:Boolean = false;
+		public static var paused:Boolean = true;
 		private var closeMenu:String = "closeMenu";
 		private var buildTurret:String = "buildTurret";
 		private var death:String = "enemyDeath";
@@ -71,12 +72,12 @@ package game
 		
 		private var wavecount:int = 0;
 		private var uid:UID;
+		private var howToPlay:HowToPlayMenu;
 		
 		public function Game(s:Stage, waves:int) 
 		{
 			soundSystem = new SoundSystem();
 			soundSystem.addMusic(backgroundSfx);
-			soundSystem.playMusic(0, 1, true);
 			
 			waveSystem = new WaveSystem();
 			addChild(waveSystem);
@@ -85,6 +86,7 @@ package game
 			bg = new BG();
 			bg.x = 0 + 300;
 			bg.y = 0;
+			bg.scaleX = 1.4;
 			addChildAt(bg, 0);
 			
 			tileGrid = new TileGrid();
@@ -98,18 +100,20 @@ package game
 			towerFactory = new TowerFactory;
 			
 			scope = new Microscope();
+			scope.visible = false;
 			addChild(scope);
 			
 			pauseButton = new PauseButton();
 			addChild(pauseButton);
 			pauseButton.scaleX = 0.5;
 			pauseButton.scaleY = 0.5;
-			pauseButton.visible = true;
+			pauseButton.visible = false;
 			
 			pauseButton.addEventListener(MouseEvent.CLICK, openMenu);
 			
 			shop = new Shop(s);
 			addChild(shop);
+			shop.visible = false;
 			shop.addEventListener(buildTurret, spawnTurret);
 			
 			cam = new Cam(0x000000, 1,s);
@@ -125,8 +129,22 @@ package game
 			
 			s.addEventListener(Event.ENTER_FRAME, camera);
 			
+			howToPlay = new HowToPlayMenu();
+			addChildAt(howToPlay, 4);
+			howToPlay.addEventListener(howToPlay.startGame, startGame);
+			
 			addEventListener(Event.ENTER_FRAME, update);
 			addEventListener(MouseEvent.CLICK, onClick);
+		}
+		
+		private function startGame(e:Event):void 
+		{
+			paused = false;
+			shop.visible = true;
+			scope.visible = true;
+			
+			removeChild(howToPlay);
+			howToPlay = null;
 		}
 		
 		private function startWave(e:Event):void 
@@ -174,10 +192,13 @@ package game
 				if (enemyArray[i].died == true) {
 					removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
+					uid.lifes -= enemyArray[i].score;
+					if (enemyArray[i].score == 0) {
+						uid.points += enemyArray[i].points;
+					}
 				}
 			}
 			
-			uid.lifes -= 1;
 		}
 		
 		private function spawnTurret(e:Event):void 
