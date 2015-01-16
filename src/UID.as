@@ -29,7 +29,7 @@ package
 			waveText.y = 10;
 			waveText.text = "";
 			waveText.setTextFormat(tf);
-			waveText.width = 400;
+			waveText.width = 410;
 			
 			lifeText = new TextField();
 			addChild(lifeText);
@@ -37,7 +37,7 @@ package
 			lifeText.y = 50;
 			lifeText.text = "";
 			lifeText.setTextFormat(tf);
-			lifeText.width = 400;
+			lifeText.width = 300;
 			
 			wavesleftText = new TextField();
 			addChild(wavesleftText);
@@ -45,7 +45,7 @@ package
 			wavesleftText.y = 80;
 			wavesleftText.text = "";
 			wavesleftText.setTextFormat(tf);
-			wavesleftText.width = 400;
+			wavesleftText.width = 300;
 			
 			addEventListener(Event.ENTER_FRAME, update);
 		}

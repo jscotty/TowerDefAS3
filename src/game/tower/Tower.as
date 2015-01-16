@@ -33,6 +33,7 @@ package game.tower
 		public static var dif:Vector2D;
 		
 		private var enemy:Array;
+		private var enemyNum:int;
 		
 		private var targetEnemy:Vector2D;
 		
@@ -80,7 +81,7 @@ package game.tower
 					
 					diff = Math.floor(dif.length);
 					//trace("dif: "+dif);
-					if (diff < 150)
+					if (diff < 120)
 					{
 						counter++;
 						anim = 0;
@@ -95,6 +96,12 @@ package game.tower
 					else
 					{
 						//	this.rotation = 0;
+					}
+					for (var p:int = particleArray.length -1; p > 0; p--) {
+						if (particleArray[p].died) {
+							removeChild(particleArray[p]);
+							particleArray.splice(p, 1);
+						}
 					}
 					
 				}
@@ -143,9 +150,16 @@ package game.tower
 		private function hit(e:Event):void 
 		{
 			for (var i:int = bulletArray.length -1; i > 0; i--) {
+				enemyNum = bulletArray[i].enemyNum;
 				removeChild(bulletArray[i]);
 				bulletArray.splice(i, 1);
 			}
+			
+			particleSystem = new ParticleSystem();
+			addChild(particleSystem);
+			particleArray.push(particleSystem);
+			particleSystem.createParticle(bullet, enemyNum);
+			
 		}
 		
 		private function lookAt(target:int):void

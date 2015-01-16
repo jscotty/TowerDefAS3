@@ -15,6 +15,7 @@ package game.bullets
 		private var bulletType:BulletWeak;
 		private var velocity:Vector2D;
 		public var bulletHit:String = "bulletHit";
+		public var enemyNum:int;
 		public function WeakBullet() 
 		{
 			bulletType = new BulletWeak();
@@ -38,6 +39,7 @@ package game.bullets
 				for (var i:int = 0; i < enemy.length; i++) {
 					if (this.hitTestObject(enemy[i])) {
 						trace("hitted enemy[" , i , "]"  );
+						enemyNum = i;
 						dispatchEvent(new Event(bulletHit));
 					}
 				}
