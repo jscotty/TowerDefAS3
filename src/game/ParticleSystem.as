@@ -44,12 +44,6 @@ package game
 			holder.x = 800;
 			holder.y = 600;
 			
-			weakBullet = new BulletWeak();
-			trace(weakBullet);
-			normalBullet = new BulletNormal();
-			strongBullet = new BulletStrong();
-			heavyBullet = new BulletHeavy();
-			
 			if (textureType == weak) {
 				startParticle(weak);
 			} else if (textureType == normal) {
@@ -65,8 +59,8 @@ package game
 		
 		private function update(e:Event):void 
 		{
-			this.x = enemy[enemyNum].x - 2835;
-			this.y = enemy[enemyNum].y - 1520;
+			this.x = enemy[enemyNum].x - 1885;
+			this.y = enemy[enemyNum].y - 1110;
 			
 			if (enemy[enemyNum].died) {
 				died = true;
@@ -82,7 +76,7 @@ package game
 			else if(type == normal) particleSeed.particle = BulletNormal;
 			else if(type == strong) particleSeed.particle = BulletStrong;
 			else if(type == heavy) particleSeed.particle = BulletHeavy;
-			particleSeed.bounds = new Rectangle(enemy[enemyNum].x, enemy[enemyNum].y, 1, 5);
+			particleSeed.bounds = new Rectangle(10, 10, 10, 10);
 			particleSeed.force = new Vector3D(0, -.1, 0);
 			particleSeed.setMagnitude(0, 0);
 			particleSeed.releaseInterval = 1000;
