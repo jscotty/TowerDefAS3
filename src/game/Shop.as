@@ -4,6 +4,7 @@ package game
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import game.bullets.StrongBullet;
 	import game.tower.Tower;
 	import game.grid.Grid;
 	import game.tower.TowerFactory;
@@ -31,11 +32,15 @@ package game
 		private var towerbool:Boolean = false;
 		private var towerint:int;
 		
+		public var towerType:String = "";
+		public var towerCost:int;
+		
 		public function Shop(s:Stage) 
 		{
 			for (var i:int = 0; i < 5; i++) {
 				counter ++;
 				if (counter == 1) btn = new TowerBtn1;
+				else if (counter == 2) btn = new TowerBtn2;
 				else btn = new TowerBtn;
 					btnArray.push(btn);
 					addChild(btn);
@@ -68,10 +73,6 @@ package game
 				}
 			}
 			
-			if (towerbool) {
-				tower.x = iX * 64;
-				tower.y = iY * 64;
-			}
 		}
 		
 		private function onClick(e:MouseEvent):void 
@@ -80,15 +81,25 @@ package game
 			var grid:Array = TileGrid.tileGrid;
 			if (grid[iY][iX] <= -1) {
 				if (towerBuildArray[0]) {
-					grid[iY][iX] = 0;
-					dispatchEvent(new Event(buildTurret));
+					if (UID.points >= 100) {
+						grid[iY][iX] = 0;
+						towerType = "weak";
+						towerCost = 100;
+						dispatchEvent(new Event(buildTurret));
+
+					}
+				}else if (towerBuildArray[1]) {
+					if (UID.points >= 350) {
+						grid[iY][iX] = 0;
+						towerType = "normal";
+						towerCost = 350;
+						dispatchEvent(new Event(buildTurret));
+					}
 				} else {
 				}
 				
 			} else if (grid[iY][iX] >= -1) {
 				//trace("mis");
-				if (towerbool) removeChild(tower);
-				towerbool = false;
 				
 			}
 			for (var i:int = 0; i < towerBuildArray.length; i++) {
@@ -96,17 +107,8 @@ package game
 				if (e.target == btnArray[i]) {
 					if (towerBuildArray[i]) {
 						towerBuildArray[i] = false;
-						towerbool = false;
 					} else {
 						towerBuildArray[i] = true;
-						if (i == 0) {
-							towerFactory = new TowerFactory();
-							tower = towerFactory.createTower(TowerFactory.NORMAL_TOWER);
-						}
-						addChild(tower);
-						towerbool = true;
-						towerint = 1;
-						tower.alpha = 0.3;
 					}
 				}else {
 				}

@@ -10,6 +10,7 @@ package game
 	import game.enemy.EnemyFactory;
 	import game.tower.Tower;
 	import game.tower.TowerFactory;
+	import menu.EndScreen;
 	import menu.HowToPlayMenu;
 	import menu.PauseMenu;
 	import utils.Vector2D;
@@ -73,11 +74,13 @@ package game
 		private var wavecount:int = 0;
 		private var uid:UID;
 		private var howToPlay:HowToPlayMenu;
+		private var endscreen:EndScreen;
 		
 		public function Game(s:Stage, waves:int) 
 		{
 			soundSystem = new SoundSystem();
 			soundSystem.addMusic(backgroundSfx);
+			soundSystem.playMusic(0, 1, true);
 			
 			waveSystem = new WaveSystem();
 			addChild(waveSystem);
@@ -126,6 +129,8 @@ package game
 			uid = new UID();
 			addChild(uid);
 			uid.totalWaves = waves;
+			uid.visible = false;
+			uid.addEventListener("done", done);
 			
 			s.addEventListener(Event.ENTER_FRAME, camera);
 			
@@ -142,6 +147,7 @@ package game
 			paused = false;
 			shop.visible = true;
 			scope.visible = true;
+			uid.visible = true;
 			
 			removeChild(howToPlay);
 			howToPlay = null;
@@ -189,12 +195,17 @@ package game
 		{
 			var l:int = enemyArray.length - 1;
 			for (var i:int = l; i > 0; i--) {
-				if (enemyArray[i].died == true) {
+				if (enemyArray[i].died >= 5) {
 					removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
-					uid.lifes -= enemyArray[i].score;
+					trace(enemyArray[i].score);
 					if (enemyArray[i].score == 0) {
-						uid.points += enemyArray[i].points;
+						UID.points += enemyArray[i].points;
+					}else if (enemyArray[i].score >= 1)  {
+						uid.lifes += enemyArray[i].score;
+						uid.lifeFrame = uid.lifes * 10;
+						trace(uid.lifeFrame);
+						uid.lifeBar.gotoAndStop(uid.lifeFrame);
 					}
 				}
 			}
@@ -203,9 +214,17 @@ package game
 		
 		private function spawnTurret(e:Event):void 
 		{
-			tower = towerFactory.createTower(TowerFactory.NORMAL_TOWER);
+			if (shop.towerType == "weak") {
+				tower = towerFactory.createTower(TowerFactory.NORMAL_TOWER);
+				UID.points -= shop.towerCost;
+			}
+			else if (shop.towerType == "normal") {
+				tower = towerFactory.createTower(TowerFactory.ANUS_TOWER);
+				UID.points -= shop.towerCost;
+			}
+			trace(shop.towerType);
 			towerArray.push(tower);
-			addChildAt(tower, 4);
+			addChild(tower);
 			tower.x = indexX * 64 + 34;
 			tower.y = indexY * 64 + 34;
 			
@@ -360,6 +379,17 @@ package game
 				
 				}
 		}
+		}
+		private function done(e:Event):void 
+		{
+			endscreen = new EndScreen();
+			addChild(endscreen);
+			if (uid.mission == "lose") {
+				endscreen.startEndScreen("lose");
+			} else if (uid.mission == "win") {
+				endscreen.startEndScreen("win");
+			}
+			paused = true;
 		}
 		
 		private function camera(e:Event):void 

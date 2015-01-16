@@ -8,10 +8,18 @@ package menu
 	 */
 	public class EndScreen extends Sprite 
 	{
-		
-		public function EndScreen() 
+		private var screen;
+		public function startEndScreen(mission:String):void 
 		{
+			if (mission == "lose") {
+				screen = new LoseScreen();
+			} else if (mission == "win") {
+				screen = new WinScreen();
+			}
 			
+			screen.width = 800;
+			screen.height = 600;
+			addChild(screen);
 		}
 		
 	}

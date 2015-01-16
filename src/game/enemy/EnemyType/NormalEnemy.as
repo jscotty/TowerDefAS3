@@ -19,7 +19,8 @@ package game.enemy.enemyType
 			
 			health = 100;
 			speed = 3.1;
-			scaleFactor = 0.001;
+			scaleFactor = 0.0003;
+			points = 100;
 		}
 		
 	}

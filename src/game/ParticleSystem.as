@@ -34,6 +34,8 @@ package game
 		private var enemy:Array = [];
 		public var died:Boolean = false;
 		
+		public var scale:Number = 1;
+		
 		public function createParticle(textureType:String, enemyNum:int):void
 		{
 			this.enemyNum = enemyNum;
@@ -60,7 +62,8 @@ package game
 		private function update(e:Event):void 
 		{
 			//trace(enemy[enemyNum].scaleX);
-			if (enemy[enemyNum].scaleX <= 0.1) {
+			//trace(scale);
+			if (scale <= 0.3) {
 				died = true;
 				this.visible = false;
 				removeEventListener(Event.ENTER_FRAME, update);

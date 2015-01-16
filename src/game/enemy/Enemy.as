@@ -17,6 +17,7 @@ package game.enemy
 		private var _speed:Number;
 		private var _health:Number;
 		private var _scaleFactor:Number;
+		private var _points:Number;
 		
 		private var death:String = "enemyDeath";
 		
@@ -33,7 +34,9 @@ package game.enemy
 		private var damaging:Boolean = false;
 		private var damageCount:int;
 		public var enemyId:int;
-		public var died:Boolean = false;
+		public var died:Number;
+		
+		public var score:int = 10;
 		
 		public var particle:Boolean = false;
 		
@@ -197,25 +200,30 @@ package game.enemy
 					this.scaleX -= 0.05;
 					this.scaleY -= 0.05;
 					
+					score = 1;
+					
 					health -= 100;
 				}
 				if (this.scaleX <= 0.01) {
 					this.scaleX = 0;
 					this.scaleY = 0;
 					health = -10;
-					died = true;
+					died = 10;
 				}
 				
 				if (health <= 0) {
 					scaleX -= 0.1;
 					scaleY -= 0.1;
 					
+					score += 10;
 					count ++;
+						died = 10;
 					//trace(count);
 					if (count >= 10) {
-						died = true;
-						removeEventListener(Event.ENTER_FRAME, update);
+						died = 10;
 						dispatchEvent(new Event(death));
+						this.visible = false;
+						removeEventListener(Event.ENTER_FRAME, update);
 					}
 				}
 				
@@ -225,6 +233,11 @@ package game.enemy
 				if (damaging) {
 					this.scaleX -= scaleFactor * damageCount;
 					this.scaleY -= scaleFactor * damageCount;
+					
+					for (var par:int = 0; par < particleArray.length; par++) {
+						particleArray[par].scale -= 0.01;
+					}
+					
 				}
 				for (var p:int = particleArray.length -1; p > 0; p--) {
 					if (particleArray[p].died) {
@@ -278,6 +291,16 @@ package game.enemy
 		public function set scaleFactor(value:Number):void 
 		{
 			_scaleFactor = value;
+		}
+		
+		public function get points():Number 
+		{
+			return _points;
+		}
+		
+		public function set points(value:Number):void 
+		{
+			_points = value;
 		}
 	}
 

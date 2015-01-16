@@ -13,11 +13,13 @@ package game.enemy.enemyType
 		{
 			enemy = new Enemy4();
 			addChild(enemy);
-			enemy.width = 32;
+			enemy.width = 64;
 			enemy.height = 32;
 			
 			health = 100;
 			speed = 3.4;
+			scaleFactor = 0.0003;
+			points = 250;
 		}
 		
 	}

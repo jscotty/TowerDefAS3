@@ -19,7 +19,7 @@ package game.tower.towerType
 			tower.width = 64;
 			tower.height = 64;
 			
-			coolDown = 40;
+			coolDown = 30;
 			damage = 0.02;
 			bullet = "weak";
 			
@@ -28,13 +28,7 @@ package game.tower.towerType
 		
 		private function animation(e:Event):void 
 		{
-			if (anim == 1) {
-				tower.play();
-			}else if (anim == 0) {
-				if (tower.currentFrame == 20) {
-					tower.gotoAndStop(1);
-				}
-			}
+			
 		}
 		
 	}

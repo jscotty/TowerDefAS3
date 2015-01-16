@@ -16,7 +16,7 @@ package menu
 		private var creditsButton:Credits;
 		private var fullScreen:Fullscreen;
 		private var backButton:Back;
-		private var creditsText:CreditsText;
+		private var creditsText:CeditsScreen;
 		private var logo:Logo;
 		private var bg:MenuBG;
 		
@@ -50,7 +50,7 @@ package menu
 			addChild(creditsButton);
 			creditsButton.visible = true;
 			
-			creditsText = new CreditsText();
+			creditsText = new CeditsScreen();
 			creditsText.x = 0;
 			creditsText.y = 0;
 			addChild(creditsText);
