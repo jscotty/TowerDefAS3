@@ -13,6 +13,13 @@ package game.enemy.enemyType
 		public function StrongEnemy() 
 		{
 			enemy = new Enemy3();
+			addChild(enemy);
+			enemy.width = 32;
+			enemy.height = 32;
+			
+			health = 100;
+			speed = 3.3;
+			mass = 3;
 		}
 		
 	}

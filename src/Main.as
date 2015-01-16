@@ -6,6 +6,7 @@ package
 	import game.Game;
 	import game.levelCreator.LevelCreator;
 	import game.MouseC;
+	import menu.DifficultyMenu;
 	import menu.MainMenu;
 	
 	/**
@@ -15,12 +16,22 @@ package
 	public class Main extends Sprite 
 	{
 		private var _startGame:String = "startGame";
+		private var start:String = "start";
 		
 		private var _mainMenu:MainMenu;
 		private var _game:Game;
 		private var _creator:LevelCreator;
 		
+		private var _difficulty:DifficultyMenu;
+		
 		private var cursor:MouseC;
+		private var easy:String = "easy";
+		private var medium:String = "medium";
+		private var hard:String = "hard";
+		
+		private var waves:int;
+		public static var indexX:Number;
+		public static var indexY:Number;
 		
 		public function Main():void 
 		{
@@ -49,6 +60,9 @@ package
 		{
 			cursor.x = mouseX;
 			cursor.y = mouseY;
+			
+			indexX = cursor.x;
+			indexY = cursor.y;
 		}
 		
 		private function startGame(e:Event):void 
@@ -56,7 +70,25 @@ package
 			removeChild(_mainMenu);
 			_mainMenu = null;
 			
-			_game = new Game(stage);
+			_difficulty = new DifficultyMenu();
+			addChildAt(_difficulty, 0);
+			_difficulty.addEventListener(start, openGame);
+		}
+		
+		private function openGame(e:Event):void 
+		{
+			if (_difficulty.difficulty == easy) {
+				waves = 20;
+			}if (_difficulty.difficulty == medium) {
+				waves = 35;
+			}if (_difficulty.difficulty == hard) {
+				waves = 50;
+			}
+			
+			removeChild(_difficulty);
+			_difficulty = null;
+			
+			_game = new Game(stage, waves);
 			addChildAt(_game, 0);
 			
 			/*_creator = new LevelCreator(stage);

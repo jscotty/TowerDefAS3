@@ -22,10 +22,14 @@ package game
 		private var towerBuild:Boolean = false;
 		private var towerBuildArray:Array = [];
 		
+		private var towerFactory:TowerFactory;
+		private var tower:Tower;
 		
 		public var iX:Number = 0;
 		public var iY:Number = 0;
 		private var buildTurret:String = "buildTurret";
+		private var towerbool:Boolean = false;
+		private var towerint:int;
 		
 		public function Shop(s:Stage) 
 		{
@@ -47,7 +51,6 @@ package game
 					towerBuildArray[b] = false;
 			}
 			
-			
 			addEventListener(Event.ENTER_FRAME, update);
 			s.addEventListener(MouseEvent.CLICK, onClick);
 		}
@@ -65,6 +68,10 @@ package game
 				}
 			}
 			
+			if (towerbool) {
+				tower.x = iX * 64;
+				tower.y = iY * 64;
+			}
 		}
 		
 		private function onClick(e:MouseEvent):void 
@@ -78,14 +85,28 @@ package game
 				} else {
 				}
 				
+			} else if (grid[iY][iX] >= -1) {
+				//trace("mis");
+				if (towerbool) removeChild(tower);
+				towerbool = false;
+				
 			}
 			for (var i:int = 0; i < towerBuildArray.length; i++) {
 				towerBuildArray[i] = false;
 				if (e.target == btnArray[i]) {
 					if (towerBuildArray[i]) {
 						towerBuildArray[i] = false;
+						towerbool = false;
 					} else {
-						towerBuildArray[i] = true;9
+						towerBuildArray[i] = true;
+						if (i == 0) {
+							towerFactory = new TowerFactory();
+							tower = towerFactory.createTower(TowerFactory.NORMAL_TOWER);
+						}
+						addChild(tower);
+						towerbool = true;
+						towerint = 1;
+						tower.alpha = 0.3;
 					}
 				}else {
 				}

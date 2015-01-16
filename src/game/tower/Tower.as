@@ -1,11 +1,18 @@
-package game.tower 
+package game.tower
 {
+	import com.blueflamedev.effects.Particle;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import game.bullets.HeavyBullet;
+	import game.bullets.NormalBullet;
+	import game.bullets.StrongBullet;
+	import game.bullets.WeakBullet;
 	import game.Game;
+	import game.ParticleSystem;
 	import game.TileGrid;
 	import game.grid.Grid;
 	import utils.Vector2D;
+	
 	/**
 	 * ...
 	 * @author justin Bieshaar
@@ -21,9 +28,9 @@ package game.tower
 		public var iX:int;
 		public var iY:int;
 		
-		public var difX:Array = [];
-		public var difY:Array = [];
-		public var dif:Vector2D;
+		public static var difX:Array = [];
+		public static var difY:Array = [];
+		public static var dif:Vector2D;
 		
 		private var enemy:Array;
 		
@@ -38,7 +45,14 @@ package game.tower
 		private var heavy:String = "heavy";
 		public var anim:Number;
 		
-		public function towerBehaviour(iX:int, iY:int):void 
+		private var bloodbullet;
+		private var bulletArray:Array = [];
+		private var enemyHit:String = "enemyHit";
+		
+		private var particleSystem:ParticleSystem;
+		private var particleArray:Array = [];
+		
+		public function towerBehaviour(iX:int, iY:int):void
 		{
 			this.iX = iX;
 			this.iY = iY;
@@ -46,97 +60,133 @@ package game.tower
 			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
-		private function update(e:Event):void 
+		private function update(e:Event):void
 		{
-			if(!Game.paused){
-			var grid:Array = TileGrid.tileGrid;
-			enemy = Game.enemyArray;
-			
-			this.rotation = 0;
-			
-			for (var i:int = 0; i < enemy.length; i++) {
-				difX[i] = Math.floor(enemy[i].x - this.x);
-				difY[i] = Math.floor(enemy[i].y - this.y);
-				//trace("difX("+i+"):("+difX+") difY("+i+"):("+difY+")");
+			if (!Game.paused)
+			{
+				var grid:Array = TileGrid.tileGrid;
+				enemy = Game.enemyArray;
 				
-				dif = new Vector2D(difX[i], difY[i]);
+				this.rotation = 0;
+				
+				for (var i:int = 0; i < enemy.length; i++)
+				{
+					difX[i] = Math.floor(enemy[i].x - this.x);
+					difY[i] = Math.floor(enemy[i].y - this.y);
+					//trace("difX("+i+"):("+difX+") difY("+i+"):("+difY+")");
+					
+					dif = new Vector2D(difX[i], difY[i]);
 					//trace(dif);
-				
-				diff = Math.floor(dif.length);
-				//trace("dif: "+dif);
-				if (diff < 150) {
-						this.rotation = dif.angle * 180 / Math.PI;
-						counter ++;
+					
+					diff = Math.floor(dif.length);
+					//trace("dif: "+dif);
+					if (diff < 150)
+					{
+						counter++;
 						anim = 0;
-						if (counter >= coolDown) {
+						if (counter >= coolDown)
+						{
 							shoot(bullet);
 							trace("shoot!");
 							counter = 0;
 							anim = 1;
 						}
-				}else {
-				//	this.rotation = 0;
+					}
+					else
+					{
+						//	this.rotation = 0;
+					}
+					
 				}
-				
-				
 			}
-			}else {
+			else
+			{
 				
 			}
 		}
 		
-		private function shoot(bulletType:String):void 
+		private function shoot(bulletType:String):void
 		{
-			if (bulletType == weak) {
+			if (bulletType == weak)
+			{
+				bloodbullet = new WeakBullet;
+				addChild(bloodbullet);
+				bloodbullet.addEventListener(bloodbullet.bulletHit, hit);
+				bulletArray.push(bloodbullet);
+				bulletArray[0].alpha = 0;
+			}
+			else if (bulletType == normal)
+			{
+				bloodbullet = new NormalBullet;
+				addChild(bloodbullet);
+				bulletArray.push(bloodbullet);
+			}
+			else if (bulletType == strong)
+			{
+				bloodbullet = new StrongBullet;
+				addChild(bloodbullet);
+				bulletArray.push(bloodbullet);
+			}
+			else if (bulletType == heavy)
+			{
+				bloodbullet = new HeavyBullet;
+				addChild(bloodbullet);
+				bulletArray.push(bloodbullet);
+			}
+			/*for (var i:int = 0; i < bulletArray.length; i++)
+			{
 				
-			} else if (bulletType == normal) {
-				
-			} else if (bulletType == strong) {
-				
-			} else if (bulletType == heavy) {
-				
+			}
+		*/
+		
+		}
+		private function hit(e:Event):void 
+		{
+			for (var i:int = bulletArray.length -1; i > 0; i--) {
+				removeChild(bulletArray[i]);
+				bulletArray.splice(i, 1);
 			}
 		}
 		
-		private function lookAt(target:int):void 
+		private function lookAt(target:int):void
 		{
 			var targetdifX:int = enemy[target].x - this.x;
 			var targetdifY:int = enemy[target].y - this.y;
 			targetEnemy = new Vector2D(targetdifX, targetdifY);
-				this.rotation = targetEnemy.angle * 180 / Math.PI;
+			this.rotation = targetEnemy.angle * 180 / Math.PI;
 			//trace(targetEnemy);
 		}
 		
-		public function get damage():Number 
+		public function get damage():Number
 		{
 			return _damage;
 		}
 		
-		public function set damage(damage:Number):void 
+		public function set damage(damage:Number):void
 		{
 			_damage = damage;
 		}
 		
-		public function get coolDown():Number 
+		public function get coolDown():Number
 		{
 			return _coolDown;
 		}
 		
-		public function set coolDown(coolDown:Number):void 
+		public function set coolDown(coolDown:Number):void
 		{
 			_coolDown = coolDown;
 		}
 		
-		public function get bullet():String 
+		public function get bullet():String
 		{
 			return _bullet;
 		}
 		
-		public function set bullet(bullet:String):void 
+		public function set bullet(bullet:String):void
 		{
 			_bullet = bullet;
 		}
-		
+	
 	}
 
 }

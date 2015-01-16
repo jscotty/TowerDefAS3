@@ -14,6 +14,12 @@ package game.enemy.enemyType
 		public function HeavyEnemy() 
 		{
 			enemy = new Enemy5;
+			addChild(enemy);
+			enemy.width = 32;
+			enemy.height = 32;
+			
+			health = 100;
+			speed = 3.2;
 		}
 		
 	}

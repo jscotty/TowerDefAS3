@@ -12,10 +12,13 @@ package
 	public class UID extends Sprite 
 	{
 		private var waveText:TextField;
+		private var wavesleftText:TextField;
 		private var lifeText:TextField;
 		private var tf:TextFormat;
 		public var time:int;
 		public var lifes:int = 10;
+		public var totalWaves:int;
+		public var wave:int;
 		
 		public function UID() 
 		{
@@ -36,6 +39,14 @@ package
 			lifeText.setTextFormat(tf);
 			lifeText.width = 400;
 			
+			wavesleftText = new TextField();
+			addChild(wavesleftText);
+			wavesleftText.x = 20;
+			wavesleftText.y = 80;
+			wavesleftText.text = "";
+			wavesleftText.setTextFormat(tf);
+			wavesleftText.width = 400;
+			
 			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
@@ -50,6 +61,9 @@ package
 			if (lifes <= 0) lifeText.text = "Lifes: " + "Death";
 			else if(lifes <= 10) lifeText.text = "Lifes: " + lifes;
 			lifeText.setTextFormat(tf);
+			
+			wavesleftText.text = "wave: " + wave + "/" + totalWaves;
+			wavesleftText.setTextFormat(tf);
 			
 		}
 		

@@ -16,6 +16,9 @@ package game.tower.towerType
 			addChild(tower);
 			tower.stop();
 			
+			tower.width = 64;
+			tower.height = 64;
+			
 			coolDown = 20;
 			damage = 0.02;
 			bullet = "weak";

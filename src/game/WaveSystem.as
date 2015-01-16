@@ -11,7 +11,7 @@ package game
 	{
 		private var count:int = 0;
 		public var time:int = 3;
-		public var wave:int = 0;
+		public var wave:int = 30;
 		public var startWave:String = "wave";
 		
 		public function WaveSystem() 

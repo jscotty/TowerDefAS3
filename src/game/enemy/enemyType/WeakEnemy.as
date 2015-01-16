@@ -17,7 +17,7 @@ package game.enemy.enemyType
 			enemy.height = 32;
 			
 			health = 100;
-			speed = 6;
+			speed = 3;
 			mass = 3;
 		}
 		

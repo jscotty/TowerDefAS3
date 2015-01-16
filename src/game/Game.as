@@ -72,13 +72,9 @@ package game
 		private var wavecount:int = 0;
 		private var uid:UID;
 		
-		public function Game(s:Stage) 
+		public function Game(s:Stage, waves:int) 
 		{
-			soundSystem = new SoundSystem();
-			soundSystem.addMusic(backgroundSfx);
-			soundSystem.addMusic(shootSfx);
-			soundSystem.playMusic(0, 1, true);
-			//soundSystem.playMusic(1, 1, true);
+			
 			
 			waveSystem = new WaveSystem();
 			addChild(waveSystem);
@@ -126,6 +122,7 @@ package game
 			
 			uid = new UID();
 			addChild(uid);
+			uid.totalWaves = waves;
 			
 			s.addEventListener(Event.ENTER_FRAME, camera);
 			
@@ -143,23 +140,27 @@ package game
 				if (wavecount <= 6) {
 					_enemy = enemyFactory.createEnemy(EnemyFactory.EASY_ENEMY);
 					//trace("easyenemy");
+				} else if (wavecount <= 11) {
+					_enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
+				} else if (wavecount <= 19) {
+					_enemy = enemyFactory.createEnemy(EnemyFactory.STRONG_ENEMY);
+				} else if (wavecount <= 28) {
+					_enemy = enemyFactory.createEnemy(EnemyFactory.EBOLA_ENEMY);
+				} else if (wavecount <= 60) {
+					_enemy = enemyFactory.createEnemy(EnemyFactory.HEAVY_ENEMY);
 				}
-				else if(wavecount <= 11) _enemy = enemyFactory.createEnemy(EnemyFactory.NORMAL_ENEMY);
-				else if(wavecount <= 19) _enemy = enemyFactory.createEnemy(EnemyFactory.STRONG_ENEMY);
-				else if(wavecount <= 28) _enemy = enemyFactory.createEnemy(EnemyFactory.EBOLA_ENEMY);
-				else if(wavecount <= 60) _enemy = enemyFactory.createEnemy(EnemyFactory.HEAVY_ENEMY);
 				enemyArray.push(_enemy);
 				addChildAt(_enemy,4);
 				_enemy.x = (34 * 4 - 34) * i * -2 - 100;
 				_enemy.y = 64 * 6 - 34;
 				_enemy.enemyBehaviour();
 				//trace(_enemy.x);
+				trace("wavecount(",wavecount,") arraylenght(",enemyArray.length,")");
 				
 				_enemy.addEventListener(death, enemyDeath);
 			}
 				if (wavecount == enemycount) wavecount = 0;
 				else;
-				trace(wavecount);
 		}
 		
 		private function loadingDone(e:Event):void 
@@ -236,6 +237,8 @@ package game
 			
 			indexX = Math.floor(mouseX / 64);
 			indexY = Math.floor(mouseY / 64);
+			
+			uid.wave = waveSystem.wave;
 			
 			/*var difbla:int = -70;
 			if (difbla < 0) {
