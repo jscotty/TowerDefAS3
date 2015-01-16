@@ -88,7 +88,6 @@ package game.tower
 						if (counter >= coolDown)
 						{
 							shoot(bullet);
-							trace("shoot!");
 							counter = 0;
 							anim = 1;
 						}
@@ -97,12 +96,7 @@ package game.tower
 					{
 						//	this.rotation = 0;
 					}
-					for (var p:int = particleArray.length -1; p > 0; p--) {
-						if (particleArray[p].died) {
-							removeChild(particleArray[p]);
-							particleArray.splice(p, 1);
-						}
-					}
+					
 					
 				}
 			}
@@ -154,11 +148,6 @@ package game.tower
 				removeChild(bulletArray[i]);
 				bulletArray.splice(i, 1);
 			}
-			
-			particleSystem = new ParticleSystem();
-			addChild(particleSystem);
-			particleArray.push(particleSystem);
-			particleSystem.createParticle(bullet, enemyNum);
 			
 		}
 		

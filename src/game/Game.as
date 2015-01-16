@@ -74,7 +74,9 @@ package game
 		
 		public function Game(s:Stage, waves:int) 
 		{
-			
+			soundSystem = new SoundSystem();
+			soundSystem.addMusic(backgroundSfx);
+			soundSystem.playMusic(0, 1, true);
 			
 			waveSystem = new WaveSystem();
 			addChild(waveSystem);
@@ -88,9 +90,6 @@ package game
 			tileGrid = new TileGrid();
 			addChildAt(tileGrid, 1);
 			tileGrid.createGrid(64, 64, tileGrid.gameGrid);
-			
-				spawnEnemy();
-			
 			
 			heart = new Heart();
 			heart.x = 2690;
@@ -155,7 +154,6 @@ package game
 				_enemy.y = 64 * 6 - 34;
 				_enemy.enemyBehaviour();
 				//trace(_enemy.x);
-				trace("wavecount(",wavecount,") arraylenght(",enemyArray.length,")");
 				
 				_enemy.addEventListener(death, enemyDeath);
 			}
@@ -167,11 +165,6 @@ package game
 		{
 			removeChild(preLoader);
 			preLoader = null;
-		}
-		
-		private function spawnEnemy():void 
-		{
-			
 		}
 		
 		private function enemyDeath(e:Event):void 
@@ -195,7 +188,16 @@ package game
 			tower.x = indexX * 64 + 34;
 			tower.y = indexY * 64 + 34;
 			
+			trace(tower.x);
+			
+			tower.addEventListener("enemyHitted", enemyHit);
+			
 			tower.towerBehaviour(tower.x / 64, tower.y / 64);
+		}
+		
+		private function enemyHit(e:Event,enemyNum:int):void 
+		{
+			
 		}
 		
 		private function openMenu(e:MouseEvent):void 

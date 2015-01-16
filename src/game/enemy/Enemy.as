@@ -3,6 +3,7 @@ package game.enemy
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import game.Game;
+	import game.ParticleSystem;
 	import game.Shop;
 	import game.TileGrid;
 	import game.grid.Grid;
@@ -15,7 +16,7 @@ package game.enemy
 	{
 		private var _speed:Number;
 		private var _health:Number;
-		private var _mass:Number;
+		private var _scaleFactor:Number;
 		
 		private var death:String = "enemyDeath";
 		
@@ -26,7 +27,15 @@ package game.enemy
 		
 		private var count:int = 1;
 		private var deathcount:int = 0;
+		private var particleSystem:ParticleSystem;
+		public var bullet:String = "";
+		private var particleArray:Array = [];
+		private var damaging:Boolean = false;
+		private var damageCount:int;
+		public var enemyId:int;
 		public var died:Boolean = false;
+		
+		public var particle:Boolean = false;
 		
 		public function enemyBehaviour():void
 		{
@@ -193,6 +202,8 @@ package game.enemy
 				if (this.scaleX <= 0.01) {
 					this.scaleX = 0;
 					this.scaleY = 0;
+					health = -10;
+					died = true;
 				}
 				
 				if (health <= 0) {
@@ -207,9 +218,36 @@ package game.enemy
 						dispatchEvent(new Event(death));
 					}
 				}
+				
+				if (particle) {
+					startParticle();
+				}
+				if (damaging) {
+					this.scaleX -= scaleFactor * damageCount;
+					this.scaleY -= scaleFactor * damageCount;
+				}
+				for (var p:int = particleArray.length -1; p > 0; p--) {
+					if (particleArray[p].died) {
+						removeChild(particleArray[p]);
+						particleArray.splice(p, 1);
+					}
+				}
 			} else {
 				
 			}
+		}
+		
+		private function startParticle():void 
+		{
+			particleSystem = new ParticleSystem();
+			addChild(particleSystem);
+			particleSystem.x = this.x + 50;
+			particleSystem.y = this.y + 40;
+			particleArray.push(particleSystem);
+			particleSystem.createParticle(bullet, enemyId);
+			damaging = true;
+			damageCount ++;
+			particle = false;
 		}
 	
 		public function get speed():Number 
@@ -232,14 +270,14 @@ package game.enemy
 			_health = health;
 		}
 		
-		public function get mass():Number 
+		public function get scaleFactor():Number 
 		{
-			return _mass;
+			return _scaleFactor;
 		}
 		
-		public function set mass(mass:Number):void 
+		public function set scaleFactor(value:Number):void 
 		{
-			_mass = mass;
+			_scaleFactor = value;
 		}
 	}
 

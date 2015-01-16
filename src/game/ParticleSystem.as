@@ -41,8 +41,8 @@ package game
 			
 			holder = new Sprite();
 			addChild(holder);
-			holder.x = 800;
-			holder.y = 600;
+			holder.x = -enemy[enemyNum].x;;
+			holder.y = -enemy[enemyNum].y;
 			
 			if (textureType == weak) {
 				startParticle(weak);
@@ -59,11 +59,12 @@ package game
 		
 		private function update(e:Event):void 
 		{
-			this.x = enemy[enemyNum].x - 1885;
-			this.y = enemy[enemyNum].y - 1110;
-			
-			if (enemy[enemyNum].died) {
+			//trace(enemy[enemyNum].scaleX);
+			if (enemy[enemyNum].scaleX <= 0.1) {
 				died = true;
+				this.visible = false;
+				removeEventListener(Event.ENTER_FRAME, update);
+				
 			}
 		}
 		
@@ -76,7 +77,7 @@ package game
 			else if(type == normal) particleSeed.particle = BulletNormal;
 			else if(type == strong) particleSeed.particle = BulletStrong;
 			else if(type == heavy) particleSeed.particle = BulletHeavy;
-			particleSeed.bounds = new Rectangle(10, 10, 10, 10);
+			particleSeed.bounds = new Rectangle(-30, -30, -30, -30);
 			particleSeed.force = new Vector3D(0, -.1, 0);
 			particleSeed.setMagnitude(0, 0);
 			particleSeed.releaseInterval = 1000;

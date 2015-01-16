@@ -15,6 +15,7 @@ package game.bullets
 		private var bulletType:BulletWeak;
 		private var velocity:Vector2D;
 		public var bulletHit:String = "bulletHit";
+		public var type:String = "weak";
 		public var enemyNum:int;
 		public function WeakBullet() 
 		{
@@ -25,7 +26,6 @@ package game.bullets
 			velocity.length = 35;
 			
 			this.rotation = (velocity.angle * 180 / Math.PI);
-			trace(this.rotation);
 			
 			addEventListener(Event.ENTER_FRAME, update);
 		}
@@ -38,8 +38,10 @@ package game.bullets
 				var enemy:Array = Game.enemyArray;
 				for (var i:int = 0; i < enemy.length; i++) {
 					if (this.hitTestObject(enemy[i])) {
-						trace("hitted enemy[" , i , "]"  );
 						enemyNum = i;
+						enemy[i].particle = true;
+						enemy[i].bullet = type;
+						enemy[i].enemyId = i;
 						dispatchEvent(new Event(bulletHit));
 					}
 				}
