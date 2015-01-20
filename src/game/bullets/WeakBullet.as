@@ -17,6 +17,7 @@ package game.bullets
 		public var bulletHit:String = "bulletHit";
 		public var type:String = "weak";
 		public var enemyNum:int;
+		private var count:int = 0;
 		public function WeakBullet() 
 		{
 			bulletType = new BulletWeak();
@@ -38,11 +39,16 @@ package game.bullets
 				var enemy:Array = Game.enemyArray;
 				for (var i:int = 0; i < enemy.length; i++) {
 					if (this.hitTestObject(enemy[i])) {
-						enemyNum = i;
-						enemy[i].particle = true;
-						enemy[i].bullet = type;
-						enemy[i].enemyId = i;
-						dispatchEvent(new Event(bulletHit));
+						count ++;
+						if (count == 1) {
+							enemyNum = i;
+							enemy[i].particle = true;
+							enemy[i].bullet = type;
+							enemy[i].enemyId = i;
+							dispatchEvent(new Event(bulletHit));
+						}
+					}else {
+						count = 0;
 					}
 				}
 		}

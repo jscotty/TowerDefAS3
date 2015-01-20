@@ -18,6 +18,8 @@ package menu
 		private var fullscreen:Fullscreen;
 		private var back:Back;
 		private var closeMenu:String = "closeMenu";
+		private var soundOff:SoundOff;
+		private var soundOn:SoundOn;
 		
 		public function PauseMenu() 
 		{
@@ -54,22 +56,44 @@ package menu
 			back = new Back();
 			back.x = 80;
 			back.y = 550;
+			back.scaleX = 0.5;
+			back.scaleY = 0.5;
 			addChild(back);
 			back.visible = false;
 			
 			resume = new Resume();
 			resume.x = 720;
 			resume.y = 550;
+			resume.scaleX = 0.5;
+			resume.scaleY = 0.5;
 			addChild(resume);
 			resume.visible = true;
+			
+			soundOff = new SoundOff();
+			soundOff.x = 400;
+			soundOff.y = 300;
+			addChild(soundOff);
+			soundOff.visible = false;
+			
+			soundOn = new SoundOn();
+			soundOn.x = 400;
+			soundOn.y = 300;
+			addChild(soundOn);
+			soundOn.visible = false;
 			
 			addEventListener(MouseEvent.CLICK, onClick);
 		}
 		
 		private function onClick(e:MouseEvent):void 
 		{
-			if (e.target == resume) dispatchEvent(new Event(closeMenu));
+			if (e.target == resume) {
+				Main.soundSystem.playMusic(0, 1, false);
+				
+				dispatchEvent(new Event(closeMenu));
+			}
 			else if (e.target == options) {
+				Main.soundSystem.playMusic(0, 1, false);
+				
 				options.visible = false;
 				credits.visible = false;
 				
@@ -78,21 +102,39 @@ package menu
 				
 				back.visible = true;
 			} else if (e.target == credits) {
+				Main.soundSystem.playMusic(0, 1, false);
+				
 				options.visible = false;
 				credits.visible = false;
 				
 				creditsText.visible = true;
 				fullscreen.visible = false;
+				soundOn.visible = false;
+				soundOff.visible = false;
 				
 				back.visible = true;
 			} else if (e.target == back) {
+				Main.soundSystem.playMusic(0, 1, false);
+				
 				options.visible = true;
 				credits.visible = true;
 				
 				creditsText.visible = false;
 				fullscreen.visible = false;
+				soundOn.visible = false;
+				soundOff.visible = false;
 				
 				back.visible = false;
+			} else if (e.target == soundOff) {
+				soundOn.visible = false;
+				soundOff.visible = false;
+				
+				Main.soundOff = true;
+			} else if (e.target == soundOn) {
+				soundOn.visible = false;
+				soundOff.visible = false;
+				
+				Main.soundOff = false;
 			}
 		}
 		

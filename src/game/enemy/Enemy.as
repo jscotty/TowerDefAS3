@@ -32,11 +32,13 @@ package game.enemy
 		public var bullet:String = "";
 		private var particleArray:Array = [];
 		private var damaging:Boolean = false;
-		private var damageCount:int;
+		public var damageCount:int;
+		private var deathPoint:String = "enemyDeathPoint";
 		public var enemyId:int;
 		public var died:Number;
 		
 		public var score:int = 10;
+		public var deathCount:int = 0;
 		
 		public var particle:Boolean = false;
 		
@@ -149,7 +151,7 @@ package game.enemy
 					}
 				}
 				
-				if (myTile == 19) {
+				if (myTile == 18) {
 						direction[0] = direction[0];
 						direction[1] = direction[1];
 				} else if (myTile == 19) {
@@ -200,18 +202,27 @@ package game.enemy
 					this.scaleX -= 0.05;
 					this.scaleY -= 0.05;
 					
-					score = 1;
+					score = 10;
 					
 					health -= 100;
 				}
-				if (this.scaleX <= 0.01) {
+				if (this.scaleX <= 0.1) {
 					this.scaleX = 0;
 					this.scaleY = 0;
-					health = -10;
 					died = 10;
+					score = 0;
+					health -= 100;
+					
+				} else if (this.scaleX >= 1.1) {
+					this.scaleX = 0;
+					this.scaleY = 0;
+					died = 10;
+					score = 0;
+					health -= 100;
+					
 				}
 				
-				if (health <= 0) {
+				if (health <= 0 && myTile == 99) {
 					scaleX -= 0.1;
 					scaleY -= 0.1;
 					
@@ -225,6 +236,15 @@ package game.enemy
 						this.visible = false;
 						removeEventListener(Event.ENTER_FRAME, update);
 					}
+				}if (health <= 0 && myTile >= 1 && myTile <= 50) {
+					scaleX -= 0.1;
+					scaleY -= 0.1;
+					
+					count ++;
+						died = 10;
+						dispatchEvent(new Event(deathPoint));
+						this.visible = false;
+						removeEventListener(Event.ENTER_FRAME, update);
 				}
 				
 				if (particle) {
@@ -245,6 +265,7 @@ package game.enemy
 						particleArray.splice(p, 1);
 					}
 				}
+				//trace("scaleX: " + this.scaleX);
 			} else {
 				
 			}

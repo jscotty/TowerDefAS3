@@ -1,6 +1,7 @@
 package menu 
 {
 	import flash.display.Sprite;
+	import game.Game;
 	
 	/**
 	 * ...
@@ -20,6 +21,9 @@ package menu
 			screen.width = 800;
 			screen.height = 600;
 			addChild(screen);
+
+			
+			Game.paused = true;
 		}
 		
 	}

@@ -17,8 +17,8 @@ package game.enemy.enemyType
 			enemy.height = 32;
 			
 			health = 100;
-			speed = 6;
-			scaleFactor = 0.001;
+			speed = 3;
+			scaleFactor = 0.005;
 			points = 50;
 		}
 		

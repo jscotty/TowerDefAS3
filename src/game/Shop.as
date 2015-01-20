@@ -41,6 +41,7 @@ package game
 				counter ++;
 				if (counter == 1) btn = new TowerBtn1;
 				else if (counter == 2) btn = new TowerBtn2;
+				else if (counter == 3) btn = new TowerBtnn3;
 				else btn = new TowerBtn;
 					btnArray.push(btn);
 					addChild(btn);
@@ -88,11 +89,18 @@ package game
 						dispatchEvent(new Event(buildTurret));
 
 					}
-				}else if (towerBuildArray[1]) {
+				} else if (towerBuildArray[1]) {
 					if (UID.points >= 350) {
 						grid[iY][iX] = 0;
 						towerType = "normal";
 						towerCost = 350;
+						dispatchEvent(new Event(buildTurret));
+					}
+				} else if (towerBuildArray[2]) {
+					if (UID.points >= 500) {
+						grid[iY][iX] = 0;
+						towerType = "heavy";
+						towerCost = 500;
 						dispatchEvent(new Event(buildTurret));
 					}
 				} else {

@@ -32,6 +32,7 @@ package game
 		private var enemyNum:int;
 		
 		private var enemy:Array = [];
+		private var count:Number = 0;
 		public var died:Boolean = false;
 		
 		public var scale:Number = 1;
@@ -63,11 +64,14 @@ package game
 		{
 			//trace(enemy[enemyNum].scaleX);
 			//trace(scale);
-			if (scale <= 0.3) {
+			count ++;
+			if (count >= 120) {
 				died = true;
 				this.visible = false;
+				if (enemy[enemyNum] == undefined);
+				else enemy[enemyNum].damageCount -= 1;
 				removeEventListener(Event.ENTER_FRAME, update);
-				
+				count = 0;
 			}
 		}
 		

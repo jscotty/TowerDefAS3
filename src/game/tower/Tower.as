@@ -22,6 +22,7 @@ package game.tower
 		private var _damage:Number;
 		private var _coolDown:Number;
 		private var _bullet:String;
+		private var _collision:int;
 		private var spaceX:Number = 70;
 		private var spaceY:Number = 70;
 		
@@ -52,6 +53,8 @@ package game.tower
 		
 		private var particleSystem:ParticleSystem;
 		private var particleArray:Array = [];
+		private var enemyDeath:String = "enemyDeath";
+		private var kill:int;
 		
 		public function towerBehaviour(iX:int, iY:int):void
 		{
@@ -68,8 +71,6 @@ package game.tower
 				var grid:Array = TileGrid.tileGrid;
 				enemy = Game.enemyArray;
 				
-				this.rotation = 0;
-				
 				for (var i:int = 0; i < enemy.length; i++)
 				{
 					difX[i] = Math.floor(enemy[i].x - this.x);
@@ -81,12 +82,17 @@ package game.tower
 					
 					diff = Math.floor(dif.length);
 					//trace("dif: "+dif);
-					if (diff < 120)
+					if (diff < collision)
 					{
+						if (bullet == heavy) {
+							this.rotation = dif.angle * 180 / Math.PI + 90;
+						}
 						counter++;
 						anim = 0;
+						//trace(counter);
 						if (counter >= coolDown)
 						{
+							kill = i;
 							shoot(bullet);
 							counter = 0;
 							anim = 1;
@@ -99,9 +105,7 @@ package game.tower
 					
 					
 				}
-			}
-			else
-			{
+			} else {
 				
 			}
 		}
@@ -130,9 +134,11 @@ package game.tower
 			}
 			else if (bulletType == heavy)
 			{
-				bloodbullet = new HeavyBullet;
-				addChild(bloodbullet);
-				bulletArray.push(bloodbullet);
+				anim = 1;
+				//trace("death");
+				enemy[kill].died = 10;
+				trace(enemy[kill].died);
+				dispatchEvent(new Event(enemyDeath));
 			}
 			/*for (var i:int = 0; i < bulletArray.length; i++)
 			{
@@ -148,7 +154,6 @@ package game.tower
 				removeChild(bulletArray[i]);
 				bulletArray.splice(i, 1);
 			}
-			
 		}
 		
 		private function lookAt(target:int):void
@@ -188,6 +193,16 @@ package game.tower
 		public function set bullet(bullet:String):void
 		{
 			_bullet = bullet;
+		}
+		
+		public function get collision():int 
+		{
+			return _collision;
+		}
+		
+		public function set collision(collision:int):void 
+		{
+			_collision = collision;
 		}
 	
 	}

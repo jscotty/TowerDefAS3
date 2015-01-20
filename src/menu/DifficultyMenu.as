@@ -55,12 +55,18 @@ package menu
 		private function startGame(e:MouseEvent):void 
 		{
 			if (e.target == easyBtn) {
+				Main.soundSystem.playMusic(0, 1, false);
+				
 				difficulty = "easy";
 				dispatchEvent(new Event(start));
 			} else if (e.target == mediumBtn) {
+				Main.soundSystem.playMusic(0, 1, false);
+				
 				difficulty = "medium";
 				dispatchEvent(new Event(start));
 			} else if (e.target == hardBtn) {
+				Main.soundSystem.playMusic(0, 1, false);
+				
 				difficulty = "hard";
 				dispatchEvent(new Event(start));
 			}

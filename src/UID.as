@@ -18,43 +18,37 @@ package
 		private var tf:TextFormat;
 		private var pointText:TextField;
 		public var time:int;
-		public var lifes:int = 0;
+		public var lifes:int = 80;
 		public var totalWaves:int;
 		public var wave:int;
-		public static var points:int = 200;
+		public static var points:int = 1200;
 		
 		private var bg:HudBG;
 		public var mission:String;
-		private var done:String = "done";
+		private var doneDeath:String = "doneD";
+		private var doneWin:String = "doneW";
+		private var tf2:TextFormat;
 		public var lifeBar:HealthBar;
 		
-		public var lifeFrame = 0;
+		public var lifeFrame:int = 0;
 		
 		public function UID() 
 		{
 			waveText = new TextField();
-			tf = new TextFormat("arial", 15, 0xffffff, false);
+			tf = new TextFormat("sketchy", 24, 0xffffff, false);
+			tf2 = new TextFormat("sketchy", 30, 0xffffff, false);
 			addChild(waveText);
-			waveText.x = 580;
-			waveText.y = 10;
+			waveText.x = 200;
+			waveText.y = 50;
 			waveText.text = "";
-			waveText.setTextFormat(tf);
+			waveText.setTextFormat(tf2);
 			waveText.width = 410;
 			waveText.selectable = false;
 			
-			lifeText = new TextField();
-			addChild(lifeText);
-			lifeText.x = 720;
-			lifeText.y = 30;
-			lifeText.text = "";
-			lifeText.setTextFormat(tf);
-			lifeText.width = 300;
-			lifeText.selectable = false;
-			
 			wavesleftText = new TextField();
 			addChild(wavesleftText);
-			wavesleftText.x = 720;
-			wavesleftText.y = 50;
+			wavesleftText.x = 670;
+			wavesleftText.y = 80;
 			wavesleftText.text = "";
 			wavesleftText.setTextFormat(tf);
 			wavesleftText.width = 300;
@@ -62,8 +56,8 @@ package
 			
 			pointText = new TextField();
 			addChild(pointText);
-			pointText.x = 720;
-			pointText.y = 70;
+			pointText.x = 670;
+			pointText.y = 120;
 			pointText.text = "";
 			pointText.setTextFormat(tf);
 			pointText.width = 300;
@@ -81,18 +75,14 @@ package
 		private function update(e:Event):void 
 		{
 			if(!Game.paused){
-				if (time == 16) {
+				if (time == 31) {
 					waveText.text = "next wave starts Now!";
-					waveText.x = 650;
+					waveText.x = 240;
 				}else {
 					waveText.text = "next wave starts in : " + time + " seconds";
-					waveText.x = 580;
+					waveText.x = 210;
 				}
-				waveText.setTextFormat(tf);
-				if (lifes <= 0) lifeText.text = "Lifes: " + "Death";
-				else if(lifes <= 10) lifeText.text = "Lifes: " + lifes;
-				lifeText.setTextFormat(tf);
-				lifeText.selectable = false;
+				waveText.setTextFormat(tf2);
 				
 				pointText.text = "points: " + points;
 				pointText.setTextFormat(tf);
@@ -102,12 +92,12 @@ package
 				wavesleftText.setTextFormat(tf);
 				wavesleftText.selectable = false;
 				
-				if (lifes >= 10) {
-					mission = "lose";
-					dispatchEvent(new Event(done));
+				lifeBar.gotoAndStop(lifeFrame);
+				
+				if (lifeFrame >= 99) {
+					dispatchEvent(new Event(doneDeath));
 				}else if (wave >= totalWaves) {
-					mission = "win";
-					dispatchEvent(new Event(done));
+					dispatchEvent(new Event(doneWin));
 				}
 			}else {
 				

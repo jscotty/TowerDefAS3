@@ -22,6 +22,7 @@ package game.tower.towerType
 			coolDown = 50;
 			damage = 0.05;
 			bullet = "weak";
+			collision = 120;
 		}
 		
 	}

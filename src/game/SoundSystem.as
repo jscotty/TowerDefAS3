@@ -2,6 +2,7 @@ package game
 {
 	import adobe.utils.CustomActions;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
@@ -20,12 +21,27 @@ package game
 		private var sound:Array = [];
 		private var soundChannel:SoundChannel;
 		private var sfx:Sound;
+		private var soundNum:int = 0;
+		private var soundVolume:Number;
+		private var soundVolumeArray:Array = [];
+		private var soundTrans:SoundTransform;
 		
 		
 		public function SoundSystem() 
 		{
 			sound = new Array();
 			soundChannel = new SoundChannel();
+			
+			addEventListener(Event.ENTER_FRAME, update);
+		}
+		
+		private function update(e:Event):void 
+		{
+		}
+		
+		private function stopMusic():void 
+		{
+				soundChannel.stop();
 		}
 		
 		public function addMusic(soundType:String):void {
@@ -34,8 +50,12 @@ package game
 			sound.push(sfx);
 		}
 		
-		public function playMusic(id:int, volume:int, loop:Boolean):void {
-			var soundTrans:SoundTransform = new SoundTransform(volume, 0);
+		public function playMusic(id:int, volume:Number, loop:Boolean):void {
+			this.soundVolume = volume;
+			if (Main.soundOff) {
+				soundVolume = 0;
+			}
+			soundTrans = new SoundTransform(soundVolume, 0);
 			
 			if(!loop){
 				soundChannel = sound[id].play(0, 1, soundTrans);

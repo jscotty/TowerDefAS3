@@ -45,8 +45,7 @@ package game
 		private var closeMenu:String = "closeMenu";
 		private var buildTurret:String = "buildTurret";
 		private var death:String = "enemyDeath";
-		private var backgroundSfx:String = "looptrack.mp3";
-		private var shootSfx:String = "shoot.mp3";
+		private var deathPoint:String = "enemyDeathPoint";
 		
 		private var weak:String = "weak";
 		private var normal:String = "normal";
@@ -78,9 +77,8 @@ package game
 		
 		public function Game(s:Stage, waves:int) 
 		{
-			soundSystem = new SoundSystem();
-			soundSystem.addMusic(backgroundSfx);
-			soundSystem.playMusic(0, 1, true);
+			soundSystem = Main.soundSystem;
+			soundSystem.playMusic(1, 1.6, true);
 			
 			waveSystem = new WaveSystem();
 			addChild(waveSystem);
@@ -90,10 +88,12 @@ package game
 			bg.x = 0 + 300;
 			bg.y = 0;
 			bg.scaleX = 1.4;
+			bg.visible = false;
 			addChildAt(bg, 0);
 			
 			tileGrid = new TileGrid();
 			addChildAt(tileGrid, 1);
+			tileGrid.visible = false;
 			tileGrid.createGrid(64, 64, tileGrid.gameGrid);
 			
 			heart = new Heart();
@@ -103,7 +103,6 @@ package game
 			towerFactory = new TowerFactory;
 			
 			scope = new Microscope();
-			scope.visible = false;
 			addChild(scope);
 			
 			pauseButton = new PauseButton();
@@ -130,13 +129,15 @@ package game
 			addChild(uid);
 			uid.totalWaves = waves;
 			uid.visible = false;
-			uid.addEventListener("done", done);
+			uid.addEventListener("doneD", doneD);
+			uid.addEventListener("doneW", doneW);
 			
 			s.addEventListener(Event.ENTER_FRAME, camera);
 			
 			howToPlay = new HowToPlayMenu();
-			addChildAt(howToPlay, 4);
+			addChild(howToPlay);
 			howToPlay.addEventListener(howToPlay.startGame, startGame);
+			paused = true;
 			
 			addEventListener(Event.ENTER_FRAME, update);
 			addEventListener(MouseEvent.CLICK, onClick);
@@ -145,9 +146,11 @@ package game
 		private function startGame(e:Event):void 
 		{
 			paused = false;
+			pauseButton.visible = true;
 			shop.visible = true;
-			scope.visible = true;
 			uid.visible = true;
+			bg.visible = true;
+			tileGrid.visible = true;
 			
 			removeChild(howToPlay);
 			howToPlay = null;
@@ -180,6 +183,7 @@ package game
 				//trace(_enemy.x);
 				
 				_enemy.addEventListener(death, enemyDeath);
+				_enemy.addEventListener(deathPoint, enemyDeathPoint);
 			}
 				if (wavecount == enemycount) wavecount = 0;
 				else;
@@ -191,22 +195,26 @@ package game
 			preLoader = null;
 		}
 		
-		private function enemyDeath(e:Event):void 
+		private function enemyDeathPoint(e:Event):void 
 		{
-			var l:int = enemyArray.length - 1;
-			for (var i:int = l; i > 0; i--) {
+			var l:int = enemyArray.length;
+			for (var i:int = l - 1; i > 0; i--) {
 				if (enemyArray[i].died >= 5) {
+						UID.points += enemyArray[i].points;
 					removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
-					trace(enemyArray[i].score);
-					if (enemyArray[i].score == 0) {
-						UID.points += enemyArray[i].points;
-					}else if (enemyArray[i].score >= 1)  {
-						uid.lifes += enemyArray[i].score;
-						uid.lifeFrame = uid.lifes * 10;
-						trace(uid.lifeFrame);
-						uid.lifeBar.gotoAndStop(uid.lifeFrame);
-					}
+				}
+			}
+		}
+		
+		private function enemyDeath(e:Event):void 
+		{
+			var l:int = enemyArray.length;
+			for (var i:int = l - 1; i > 0; i--) {
+				if (enemyArray[i].died >= 5) {
+						uid.lifeFrame += enemyArray[i].score;
+					removeChild(enemyArray[i]);
+					enemyArray.splice(i, 1);
 				}
 			}
 			
@@ -222,15 +230,17 @@ package game
 				tower = towerFactory.createTower(TowerFactory.ANUS_TOWER);
 				UID.points -= shop.towerCost;
 			}
-			trace(shop.towerType);
+			else if (shop.towerType == "heavy") {
+				tower = towerFactory.createTower(TowerFactory.PLANT_TOWER);
+				UID.points -= shop.towerCost;
+			}
 			towerArray.push(tower);
-			addChild(tower);
+			addChildAt(tower, 3);
 			tower.x = indexX * 64 + 34;
 			tower.y = indexY * 64 + 34;
 			
-			trace(tower.x);
-			
 			tower.addEventListener("enemyHitted", enemyHit);
+			tower.addEventListener("enemyDeath", enemyDeathPoint);
 			
 			tower.towerBehaviour(tower.x / 64, tower.y / 64);
 		}
@@ -242,12 +252,14 @@ package game
 		
 		private function openMenu(e:MouseEvent):void 
 		{
+				Main.soundSystem.playMusic(0, 1, false);
+				
 			pauseMenu = new PauseMenu();
 			pauseMenu.x = cam.x;
 			pauseMenu.y = cam.y;
 			addChild(pauseMenu);
 			pauseMenu.addEventListener(closeMenu, exitMenu);
-			paused = true
+			paused = true;
 			
 			pauseButton.visible = false;
 		}
@@ -380,16 +392,21 @@ package game
 				}
 		}
 		}
-		private function done(e:Event):void 
+		private function doneD(e:Event):void 
 		{
 			endscreen = new EndScreen();
 			addChild(endscreen);
-			if (uid.mission == "lose") {
+			endscreen.x = cam.x;
+			endscreen.y = cam.y;
 				endscreen.startEndScreen("lose");
-			} else if (uid.mission == "win") {
+		}
+		private function doneW(e:Event):void 
+		{
+			endscreen = new EndScreen();
+			addChild(endscreen);
+			endscreen.x = cam.x;
+			endscreen.y = cam.y;
 				endscreen.startEndScreen("win");
-			}
-			paused = true;
 		}
 		
 		private function camera(e:Event):void 

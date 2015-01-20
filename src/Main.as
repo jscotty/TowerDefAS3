@@ -6,6 +6,7 @@ package
 	import game.Game;
 	import game.levelCreator.LevelCreator;
 	import game.MouseC;
+	import game.SoundSystem;
 	import menu.DifficultyMenu;
 	import menu.MainMenu;
 	
@@ -33,6 +34,12 @@ package
 		public static var indexX:Number;
 		public static var indexY:Number;
 		
+		public static var soundSystem:SoundSystem;
+		public static var soundOff:Boolean;
+		
+		private var clickSfx:String = "Click_Sound.mp3";
+		private var backgroundSfx:String = "looptrack.mp3";
+		
 		public function Main():void 
 		{
 			if (stage) init();
@@ -54,6 +61,10 @@ package
 			_mainMenu.addEventListener(_startGame, startGame);
 			
 			addEventListener(Event.ENTER_FRAME, mouseCurs);
+			
+			soundSystem = new SoundSystem();
+			soundSystem.addMusic(clickSfx);
+			soundSystem.addMusic(backgroundSfx);
 		}
 		
 		private function mouseCurs(e:Event):void 

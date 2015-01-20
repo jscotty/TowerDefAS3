@@ -22,6 +22,7 @@ package game.tower.towerType
 			coolDown = 30;
 			damage = 0.02;
 			bullet = "weak";
+			collision = 120;
 			
 			addEventListener(Event.ENTER_FRAME, animation);
 		}

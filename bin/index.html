@@ -1,40 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8"/>
-	<title>towerDefence</title>
-	<meta name="description" content="" />
-	
-	<script src="js/swfobject.js"></script>
-	<script>
-		var flashvars = {
-		};
-		var params = {
-			menu: "false",
-			scale: "noScale",
-			allowFullscreen: "true",
-			allowScriptAccess: "always",
-			bgcolor: "",
-			wmode: "direct" // can cause issues with FP settings & webcam
-		};
-		var attributes = {
-			id:"towerDefence"
-		};
-		swfobject.embedSWF(
-			"towerDefence.swf", 
-			"altContent", "100%", "100%", "10.0.0", 
-			"expressInstall.swf", 
-			flashvars, params, attributes);
-	</script>
-	<style>
-		html, body { height:100%; overflow:hidden; }
-		body { margin:0; }
-	</style>
-</head>
-<body>
-	<div id="altContent">
-		<h1>towerDefence</h1>
-		<p><a href="http://www.adobe.com/go/getflashplayer">Get Adobe Flash player</a></p>
-	</div>
-</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<title>Condemnation</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css" media="screen">
+		html, body { background-color: black;}
+		body { margin: 2em 25em 10em 22em;  overflow:hidden;}
+		#flashContent { width:100%; height:100%; margin: -5em auto;}
+		a{margin-top: -20px; color: green; font-size: 2em;}
+		p{margin-top: -2em; margin-left: 25em; color:white;}
+		form{margin: 5px 0 2em 14em; float: left;}
+		</style>
+	</head>
+	<body>
+
+			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="800" height="600" id="Frats game" align="middle">
+				<param name="movie" value="towerDefence.swf" />
+				<param name="quality" value="high" />
+				<param name="bgcolor" value="#000000" />
+				<param name="play" value="true" />
+				<param name="loop" value="true" />
+				<param name="wmode" value="window" />
+				<param name="scale" value="showall" />
+				<param name="menu" value="true" />
+				<param name="devicefont" value="false" />
+				<param name="salign" value="" />
+				<param name="allowScriptAccess" value="sameDomain" />
+				<!--[if !IE]>-->
+				<object type="application/x-shockwave-flash" data="towerDefence.swf" width="800" height="600">
+					<param name="movie" value="towerDefence.swf" />
+					<param name="quality" value="high" />
+					<param name="bgcolor" value="#000000" />
+					<param name="play" value="true" />
+					<param name="loop" value="true" />
+					<param name="wmode" value="window" />
+					<param name="scale" value="showall" />
+					<param name="menu" value="true" />
+					<param name="devicefont" value="false" />
+					<param name="salign" value="" />
+					<param name="allowScriptAccess" value="sameDomain" />
+				<!--<![endif]-->
+					<a href="http://www.adobe.com/go/getflash">
+						<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+					</a>
+				<!--[if !IE]>-->
+				</object>
+				<!--<![endif]-->
+			</object>
+		</div>
+	</body>
 </html>
